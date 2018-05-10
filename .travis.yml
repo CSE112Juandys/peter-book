@@ -18,6 +18,7 @@ script:
   - cd ./client && npm test && cd ..
   - npm run coverage
   - cd ./client && npm run build && cd ..
+  - echo env
 deploy:
   - provider: firebase
     project: staging
@@ -39,4 +40,5 @@ deploy:
       secure: 1/xe0jIAOe0p9LtvvOEnf-gNC3HCWT6UOtoyY1kFSA340
     skip_cleanup: true
     on:
-      branch: /^(?i:release)\/.*$/
+      all_branches: true
+      condition: ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} =~ ^release\/.*$
