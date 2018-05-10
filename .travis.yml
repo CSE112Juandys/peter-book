@@ -3,7 +3,7 @@ branches:
   only:
   - develop
   - master
-  - production
+  - /^(?i:release)\/.*$/
 language: node_js
 node_js:
   - "stable"
@@ -39,4 +39,4 @@ deploy:
       secure: 1/xe0jIAOe0p9LtvvOEnf-gNC3HCWT6UOtoyY1kFSA340
     skip_cleanup: true
     on:
-      branch: production
+      branch: /^(?i:release)\/.*$/
