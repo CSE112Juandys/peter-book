@@ -1,7 +1,7 @@
 # safelist
 branches:
   only:
-  - staging
+  - develop
   - master
   - production
 language: node_js
@@ -25,7 +25,7 @@ deploy:
       secure: 1/O2F8KID0I1cWjmtOUy3xd1tBnme1LyT87wk7cQ4jvAo
     skip_cleanup: true
     on:
-      branch: staging
+      branch: develop
   - provider: firebase
     project: stable
     token:
