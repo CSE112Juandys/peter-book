@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "stable": "peter-book",
+    "staging": "peter-book-staging",
+    "production": "peter-book-product"
+  }
+}
