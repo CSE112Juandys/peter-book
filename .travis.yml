@@ -40,4 +40,4 @@ deploy:
     skip_cleanup: true
     on:
       all_branches: true
-      condition: ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} =~ /^(?i:release)\/.*$/
+      condition: ${TRAVIS_PULL_REQUEST_BRANCH:-TRAVIS_BRANCH} =~ /^(?i:release)\/.*$/
