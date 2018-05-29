@@ -1,9 +1,17 @@
 import React from 'react';
 import './post.css';
+import PostText from './PostText';
+import PostOptions from './PostOptions';
+
 
 const Post = () => {
     return (
-        <div>About</div>
+        <div className = "post">
+
+            <PostOptions/>
+
+            <PostText/>
+        </div>
     )
 }
 

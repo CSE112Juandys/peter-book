@@ -44,3 +44,66 @@
    margin: 5px;
    align-self: flex-start;
 }
+/* * {
+    border: 2px solid black;
+}
+.formarea{
+    margin: 0;
+    padding:0;
+} */
+.post{
+    width: 400px;
+    float:middle;
+    margin:auto;
+
+}
+
+.posttext {
+    width: 400px;
+    height: 100px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+}
+.submitpost{
+    float:right;
+    background-color:rgb(4.6%, 74.5%, 51.3%); /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 7px 20px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+}
+
+/* Add a background color on hover */
+.submitpost:hover {
+    background-color: #3e8e41;
+}
+
+.btn-group button {
+    background-color:rgb(4.6%, 74.5%, 51.3%); /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 7px 20px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    width:50%;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+    background-color: #3e8e41;
+}
