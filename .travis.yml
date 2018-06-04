@@ -17,7 +17,7 @@ install:
 script:
   - cd ./client && npm test && cd ..
   - npm run coverage
-  - cd ./client && npm run build && cd ..
+  - cd ./client && CI=false npm run build && cd ..
   - echo env
 deploy:
   - provider: firebase
