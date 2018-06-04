@@ -41,8 +41,8 @@ class AdCard extends React.Component {
                                 action={ menuButton }
                     />
                     <Divider />
-                    <CardContent>
-                        <script data-cfasync='false' type='text/javascript' src='//p290496.clksite.com/adServe/banners?tid=290496_563979_10'></script>
+                    <CardContent style={{width:'100%', height:'400px'}}>
+                        <script data-cfasync='false' type='text/javascript' src='//p290496.clksite.com/adServe/banners?tid=290496_564395_0'></script>
                     </CardContent>
                 </Card>
             </div>
