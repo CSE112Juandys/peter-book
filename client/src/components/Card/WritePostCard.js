@@ -61,9 +61,6 @@ class WritePostCard extends React.Component {
                     </CardContent>
                     <Divider />
                     <CardActions >
-                        <Button variant="contained" component="span" className={classes.roseIcon} >
-                            <InsertPhoto />
-                        </Button>
                         <Button className={classes.roseIcon} onClick={this.handleSubmit}>
                             <Send />
                         </Button>

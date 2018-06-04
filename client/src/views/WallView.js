@@ -3,8 +3,6 @@ import { Grid, Hidden, Snackbar } from '@material-ui/core';
 import { PhotoCamera, People } from '@material-ui/icons';
 import { generatePost } from 'api/mockAPI';
 import GridCard from 'components/Card/GridCard';
-import photoGridImg from 'assets/img/photoGridImg/photoGridImg';
-import friendGridImg from 'assets/img/friendGridImg/friendGridImg';
 import ProfileCard from 'components/Card/ProfileCard'
 import PostCard from 'components/Card/PostCard';
 import AdCard from 'components/Card/AdCard';
