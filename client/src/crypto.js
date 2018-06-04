@@ -62,7 +62,7 @@ module.exports = {
     xhr.send(postData);
   },
 
-  kmsEncrypt: function(firebase, access_token, password){
+  kmsEncrypt: function(access_token, password){
     var xhttp = new XMLHttpRequest();
     var url = "https://cloudkms.googleapis.com/v1/projects/helloworld-b7e91/locations/global/keyRings/master_secret/cryptoKeys/v0:encrypt?access_token=" + access_token;
 

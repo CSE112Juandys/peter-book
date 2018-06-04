@@ -11,7 +11,6 @@ class App extends Component {
     var atok = sessionStorage.getItem('atok');
     kmsEncrypt(atok, password);
     var keycipher = sessionStorage.getItem('cipher');
-    console.log(keycipher);
     kmsDecrypt(atok, keycipher);
     var demo = sessionStorage.getItem('demo');
 
