@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {crypto, password, base64url, pri_key, encrypt, decrypt, authGAPI, kmsEncrypt, kmsDecrypt} from './crypto.js';
+import {randomstring, crypto, password, base64url, pri_key, generate, encrypt, decrypt, authGAPI, kmsEncrypt, kmsDecrypt} from './crypto.js';
 
 class App extends Component {
   render() {
+    generate(randomstring);
     var smg = encrypt(crypto, "HELLOWORLD", password);
     var gms = decrypt(crypto, smg, password);
     authGAPI(crypto, base64url, pri_key);
