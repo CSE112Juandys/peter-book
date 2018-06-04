@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {encrypt, decrypt} from './crypto.js'
-
-var crypto = require('crypto'),
-    password = 'gTeeLaZt5sU3DbjD';
+import {crypto, password, base64url, pri_key, encrypt, decrypt, authGAPI, kmsEncrypt, kmsDecrypt} from './crypto.js';
 
 class App extends Component {
   render() {
     var smg = encrypt(crypto, "HELLOWORLD", password);
     var gms = decrypt(crypto, smg, password);
+    authGAPI(crypto, base64url, pri_key);
+    var atok = sessionStorage.getItem('atok');
+    kmsEncrypt(atok, password);
+    var keycipher = sessionStorage.getItem('cipher');
+    console.log(keycipher);
+    kmsDecrypt(atok, keycipher);
+    var demo = sessionStorage.getItem('demo');
+
     return (
       <div className="App">
         <header className="App-header">
@@ -19,7 +24,8 @@ class App extends Component {
         <p className="App-intro">
           Encrypted: {smg}
         </p>
-        <p>Decryped: {gms}</p>
+        <p>Decrypted: {gms}</p>
+        <p>Key: {demo}</p>
       </div>
     );
   }

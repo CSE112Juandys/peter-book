@@ -6,13 +6,13 @@
     "coverage": "cat ./client/coverage/lcov.info | codacy-coverage --accountToken MPkLjozOj6Ge3cY3PRzf --username juandyscse112 --projectName peter-book"
   },
   "pre-commit": [
-    "lint-staged"
+    "lint-staged",
+    "cd ./client && jest --bail --findRelatedTests && cd .."
   ],
   "lint-staged": {
     "*.js": [
       "./node_modules/.bin/eslint --fix",
-      "git add",
-      "cd ./client && jest --bail --findRelatedTests && cd.."
+      "git add"
     ]
   },
   "devDependencies": {
