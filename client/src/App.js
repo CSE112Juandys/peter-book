@@ -2,9 +2,19 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {randomstring, crypto, password, base64url, pri_key, generate, encrypt, decrypt, authGAPI, kmsEncrypt, kmsDecrypt} from './crypto.js';
+import firebase from 'firebase';
 
 class App extends Component {
   render() {
+    // Set the configuration for your app
+    var config = {
+      apiKey: "AIzaSyAPX8UFwLI5AoGNjzp6EyCIzQ_U395uEGQ",
+      authDomain: "helloworld-b7e91.firebaseapp.com",
+      databaseURL: "https://helloworld-b7e91.firebaseio.com",
+      storageBucket: "gs://helloworld-b7e91.appspot.com"
+    };
+    firebase.initializeApp(config);
+
     generate(randomstring);
     var smg = encrypt(crypto, "HELLOWORLD", password);
     var gms = decrypt(crypto, smg, password);
@@ -12,8 +22,33 @@ class App extends Component {
     var atok = sessionStorage.getItem('atok');
     kmsEncrypt(atok, password);
     var keycipher = sessionStorage.getItem('cipher');
+    sessionStorage.removeItem('cipher');
     kmsDecrypt(atok, keycipher);
     var demo = sessionStorage.getItem('demo');
+    sessionStorage.removeItem('demo');
+
+    var timestamp = Date.now()/1000;
+    var payload = {
+      "Datakey": keycipher,
+      "Posts": {
+        "Post1": {
+            "Data": smg,
+            "Owner": "Yes",
+            "Timestamp": timestamp
+        }
+      }
+    };
+
+    // reference path
+    var dbrf= firebase.database().ref("User1/Friends/User2");
+    dbrf.set (payload).then(
+      success => {
+        console.log('success',success);
+      },
+      error => {
+        console.log('error',error);
+      }
+    );
 
     return (
       <div className="App">
