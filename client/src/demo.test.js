@@ -1,9 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Demo from 'demo';
+import {configure, shallow} from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
+configure ({adapter: new Adapter()})
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Demo />, div);
-  ReactDOM.unmountComponentAtNode(div);
+describe('Demo renders', ()=>{
+  it('renders please', () => {
+    let wrapper = shallow(<Demo/>)
+    /*eslint-disable */
+    expect(wrapper.find('.App'))
+    /*eslint-enable */
+  });
 });
