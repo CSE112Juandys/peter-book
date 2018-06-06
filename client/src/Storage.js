@@ -26,6 +26,11 @@ export function storeNewImage(userId, postId, image, uploader, imgElement){
   );
 }
 
+export function deleteAllImagesUnderPost(userId, postId){
+  var storageRef = storage.ref(userId + '/' + postId + '/');
+  storageRef.delete();
+}
+
 export function deleteImage(userId, postId, imageName){
   var storageRef = storage.ref(userId + '/' + postId + '/' + imageName);
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {encrypt, decrypt} from './crypto.js';
-import {likePost} from './dbOperations.js'
+import {likePost, addNewComment} from './dbOperations.js'
 import {uploadNewProfilePic} from './Storage.js';
 import {getLikesFromPost, checkIfUserLikePost} from './dbQuery.js';
 
@@ -17,7 +17,9 @@ import {getLikesFromPost, checkIfUserLikePost} from './dbQuery.js';
 //writeNewPost("postID", "random_user_ID", "10-01-1998");
 likePost("random_user_ID2", "random_user_ID", "postID");
 getLikesFromPost("random_user_ID", "postID");
-checkIfUserLikePost("random_user_ID", "postID", "random_user_ID2")
+checkIfUserLikePost("random_user_ID", "postID", "random_user_ID2");
+addNewComment("random_user_ID", "postID", "-LEIyw6K-lXom6HsuTKJ", "random_user_ID2", "hi roy", "2018-06-05");
+
 
 var crypto = require('crypto'),
     password = 'gTeeLaZt5sU3DbjD';
