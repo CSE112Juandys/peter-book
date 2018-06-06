@@ -59,6 +59,11 @@ export function likePost(liker_id, op_id, post_id){
   });
 }
 
+export function findAllPostsByUser(userId){
+  var postsRef = firebase.database().ref('posts/' + userId);
+  return postsRef;
+}
+
 export function updateUserName(userId, newName){
   var userRef = firebase.database().ref('users/' + userId);
   userRef.set({
