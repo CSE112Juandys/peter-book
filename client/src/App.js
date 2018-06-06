@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {randomstring, crypto, password, base64url, pri_key, generate, encrypt, decrypt, authGAPI, kmsEncrypt, kmsDecrypt} from './crypto.js';
+import {password, pri_key, generate, encrypt, decrypt, authGAPI, kmsEncrypt, kmsDecrypt} from './crypto.js';
+import {addFd, deleteFd} from './friends.js';
 import firebase from 'firebase';
 
 class App extends Component {
@@ -15,10 +16,10 @@ class App extends Component {
     };
     firebase.initializeApp(config);
 
-    generate(randomstring);
-    var smg = encrypt(crypto, "HELLOWORLD", password);
-    var gms = decrypt(crypto, smg, password);
-    authGAPI(crypto, base64url, pri_key);
+    generate();
+    var smg = encrypt("HELLOWORLD", password);
+    var gms = decrypt(smg, password);
+    authGAPI(pri_key);
     var atok = sessionStorage.getItem('atok');
     kmsEncrypt(atok, password);
     var keycipher = sessionStorage.getItem('cipher');
@@ -27,7 +28,10 @@ class App extends Component {
     var demo = sessionStorage.getItem('demo');
     sessionStorage.removeItem('demo');
 
-    var timestamp = Date.now()/1000;
+    addFd('User1', 'User2', keycipher);
+    deleteFd('User1', 'User2');
+
+    /*var timestamp = Date.now()/1000;
     var payload = {
       "Datakey": keycipher,
       "Posts": {
@@ -37,9 +41,9 @@ class App extends Component {
             "Timestamp": timestamp
         }
       }
-    };
+    };*/
 
-    // reference path
+    /*
     var dbrf= firebase.database().ref("User1/Friends/User2");
     dbrf.set (payload).then(
       success => {
@@ -48,7 +52,7 @@ class App extends Component {
       error => {
         console.log('error',error);
       }
-    );
+    );*/
 
     return (
       <div className="App">
