@@ -33,18 +33,15 @@ class App extends Component {
 
     /*var timestamp = Date.now()/1000;
     var payload = {
-      "Datakey": keycipher,
-      "Posts": {
-        "Post1": {
-            "Data": smg,
-            "Owner": "Yes",
-            "Timestamp": timestamp
-        }
+      "Post1": {
+          "Data": smg,
+          "Owner": "Yes",
+          "Timestamp": timestamp
       }
-    };*/
+    };
 
-    /*
-    var dbrf= firebase.database().ref("User1/Friends/User2");
+
+    var dbrf= firebase.database().ref("User1/Friends/User2/Posts");
     dbrf.set (payload).then(
       success => {
         console.log('success',success);

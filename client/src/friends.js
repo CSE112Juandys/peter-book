@@ -2,6 +2,10 @@ module.exports = {
   addFd: function(idA, idB, keycipher) {
     var firebase = require('firebase');
 
+    if (idA === idB) {
+      return false;
+    }
+
     var refA = idA + "/Friends/" + idB;
     var refB = idB + "/Friends/" + idA;
     var dbrfA = firebase.database().ref(refA);
@@ -28,9 +32,15 @@ module.exports = {
         console.log('error',error);
       }
     );
+
+    return true;
   },
   deleteFd: function(idA, idB){
     var firebase = require('firebase');
+
+    if (idA === idB) {
+      return false;
+    }
 
     var refA = idA + "/Friends/" + idB;
     var refB = idB + "/Friends/" + idA;
@@ -54,5 +64,7 @@ module.exports = {
         console.log('error',error);
       }
     );
+
+    return true;
   }
 }
