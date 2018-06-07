@@ -1,0 +1,217 @@
+*
+{
+  font-family: 'Roboto';
+}
+
+h1
+{
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+#widget_body
+{
+  background-color: #d4215f;
+  margin-left: 10%;
+  margin-top: 2.5%;
+  height: 580px;
+  width: 500px;
+  border-radius: 5px;
+  float: left;
+  margin-bottom: 100px;
+}
+
+#widget_body_login
+{
+  background-color: #d4215f;
+  margin-left: 10%;
+  margin-top: 2.5%;
+  height: 325px;
+  width: 500px;
+  border-radius: 5px;
+  float: left;
+}
+
+.input
+{
+  width: calc(80% - 15px);
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+  padding: 5px 0px 5px 15px;
+  margin-left: 10%;
+  margin-top: 30px;
+  font-size: 17px;
+  color: #d4215f;
+}
+
+::placeholder
+{
+  color: #d4215f;
+  opacity: 0.6;
+}
+
+input:focus, button:focus
+{
+  outline: none;
+  opacity: 0.8;
+}
+
+button, input[type='submit']
+{
+  background-color: white;
+  border: none;
+  opacity: 0.6;
+  height: 45px;
+  margin-right: 10%;
+  border-radius: 5px;
+  color: #d4215f;
+  font-size: 17px;
+  margin-top: 16px;
+  transition: 0.3s;
+}
+
+#signup_button
+{
+  float: right;
+  width: 40%;
+}
+
+#login_button
+{
+  margin-right: 10%;
+  width: 22%;
+  float: right;
+  margin-top: 18px;
+}
+
+button:hover, input[type='submit']:hover
+{
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.first_input, #login_email
+{
+  margin-top: 50px;
+}
+
+#checkbox_text
+{
+  color: white;
+  float: left;
+  width: 28%;
+  margin-top: 30px;
+  text-align: right;
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+.login_small_text
+{
+  color: white;
+  float: left;
+  font-size: 14px;
+  margin-left: 10%;
+  margin-bottom: 25px;
+}
+
+#no_account
+{
+  float: right;
+  margin-right: 10%;
+}
+
+.container {
+  display: block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: white;
+  width: 25px;
+  margin-top: 30px;
+  text-align: right;
+  font-size: 15px;
+  float: left;
+  margin-left: 10%;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  float: left;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: white;
+  border-radius: 5px;
+  transition: 0.4s;
+  float: left;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #d4215f;
+  border: 4px solid white;
+  height: 17px;
+  width: 17px;
+  border-radius: 5px;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+#recaptcha
+{
+  margin-left: 10%;
+  float: left;
+  width: 50%;
+}
+
+.g-recaptcha
+{
+  transform:scale(0.83);
+  transform-origin:0 0;
+  float: left;
+}
+
+#login_second
+{
+  display: none;
+}
+
+.login_two_factor_text
+{
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 20px;
+}
+
+#login_two_factor_input
+{
+  width: calc(80% - 15px);
+  height: 35px;
+  border-radius: 5px;
+  border: none;
+  padding: 5px 0px 5px 15px;
+  margin-left: 10%;
+  margin-top: 20px;
+  font-size: 17px;
+  color: #d4215f;
+}

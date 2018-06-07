@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <title>PeterBook Login/Signup Widgets</title>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+  </head>
+  <body>
+    <h1> Hello Team Juandys</h1>
+
+<!-- COPY PASTE THIS DIV FOR SIGNUP -->
+    <div id="widget_body">
+      <div>
+        <input placeholder="First Name: *" maxlength=50 id="signup_first_name" class="first_input input"></input>
+        <input placeholder="Last Name: *" maxlength=50 id="signup_last_name" class="input"></input>
+        <input placeholder="Email: *" maxlength=50 class="input" id="signup_email"></input>
+        <input placeholder="Phone Number: *" maxlength=50 class="input" id="signup_number"></input>
+        <input placeholder="Password: *" maxlength=25 type="password" class="input" id="signup_password"></input>
+        <input placeholder="Confirm Password: *" maxlength=25 type="password" class="input" id="signup_password_confirm"></input>
+        <label class="container">
+          <input type="checkbox"></input>
+          <span class="checkmark"></span>
+        </label>
+        <p id="checkbox_text">I agree to the Terms & Conditions<p>
+        <input type="submit" value="Sign Up" id="signup_button" onclick="create_user()">
+      </div>
+    </div>
+<!-- COPY PASTE THIS DIV FOR SIGNUP ENDS HERE-->
+
+
+
+<!-- COPY PASTE THIS DIV FOR LOGIN -->
+    <div id="widget_body_login">
+      <div>
+        <div id="login_first">
+          <input placeholder="Email: *" maxlength=50 id="login_email" class="input" required></input>
+          <input placeholder="Password: *" maxlength=50 type="password" class="input" id="login_password" required></input>
+          <p class="login_small_text">Forgot Password?</p>
+          <p class="login_small_text" id="no_account">Don't have an account? Sign Up</p>
+          <div id="recaptcha">
+            <div class="g-recaptcha" data-sitekey="6LcT71wUAAAAABy-gTcYMYhO03-SQHNVcfcAMKAx" id="recaptcha-container"></div>
+          </div>
+          <input type="submit" value="Login" id="login_button" onclick="login_user()">
+        </div>
+      </div>
+    </div>
+<!-- COPY PASTE THIS DIV FOR LOGIN ENDS HERE-->
+
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBk5rXfzwMfApvSu9Sw7bahmnzbjMn-raE",
+      authDomain: "peterbookuserauthentication.firebaseapp.com",
+      databaseURL: "https://peterbookuserauthentication.firebaseio.com",
+      projectId: "peterbookuserauthentication",
+      storageBucket: "",
+      messagingSenderId: "87395305097"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="myscripts.js"></script>
+  </body>
+</html>
