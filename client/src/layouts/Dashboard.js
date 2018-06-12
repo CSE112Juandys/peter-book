@@ -8,7 +8,7 @@ import { withStyles, Button } from '@material-ui/core';
 import cx from 'classnames';
 import WallView from 'views/WallView';
 import { Sidebar, Header } from 'components';
-import { userRoutes, user } from 'routes/friends';
+import { userRoutes } from 'routes/friends';
 import { generateUsers, generateFriends, generatePosts } from 'api/mockAPI';
 import appStyle from 'assets/jss/cl-components/appStyle';
 import FriendModal from 'components/Modal/FriendModal';
@@ -18,8 +18,8 @@ import { updateFirebaseStore } from 'actions/updateFirebaseStoreActions';
 import { dbDeleteFriend, dbAddFriend } from 'actions/friendActions';
 import FriendDialogue from '../components/Dialogue/FriendDialogue';
 
-const posts = generatePosts(user, 50);
-//const posts = [];
+//const posts = generatePosts(user, 50);
+const posts = [];
 
 
 
@@ -32,13 +32,17 @@ class App extends React.Component {
 
         this.state = {  open           : true,
                         openFriendModal : false,
-                        friends        : null };
+                        user            : this.props.user,
+                        friends        : this.props.friends };
     }
 
     componentWillReceiveProps(newProps) {
+        console.log('NEW PROPS RECEIVED')
         console.log(newProps);
-        const { friends } = newProps;
-        this.setState({ friends });
+        const { friends, user } = newProps;
+        const newUser = this.state.user;
+        newUser.friends = friends;
+        this.setState({ friends, user : newUser });
     }
 
     handleFriendModalOpen = () => {
@@ -70,6 +74,15 @@ class App extends React.Component {
 
     render() {
         console.log(this.props);
+        const { user } = this.state;
+
+        const userRoutes = [{   owner       : user,
+                                util        : true,
+                                path        : '/profile',
+                                sidebarName : 'User Profile',
+                                navbarName  : 'User Profile',
+                                icon        : `${user.firstName[0]}${user.lastName[0]}`,
+                                component   : WallView    }];
 
         const friendRoutes = this.props.friends.map((friend, key) => {
             return {
@@ -153,7 +166,7 @@ App.propTypes = {
 function mapStateToProps(state) {
     console.log(state);
     return {
-        //user    : state.user,
+        user    : state.user,
         friends : state.friends,
         //posts   : state.posts,
         //auth    : state.auth

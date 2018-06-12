@@ -14,6 +14,8 @@ class FriendDialogue extends React.Component {
     state = { copySnackbarOpen : false, 
               friendSnackbarOpen : false,
               dupeSnackbarOpen : false,
+              selfSnackbarOpen : false,
+              noIdSnackbarOpen : false,
               friendId : ""
             };
     
@@ -37,20 +39,41 @@ class FriendDialogue extends React.Component {
         this.setState({ friendSnackbarOpen : false });
     }
 
+    handleSelfSnackbarClose = () => {
+        this.setState({ selfSnackbarOpen : false });
+    }
+
+    handleNoIdSnackbarClose = () => {
+        this.setState({ noIdSnackbarOpen : false });
+    }
+
+    handleDialogClose = () => {
+        this.setState({ friendId : "" });
+        this.props.handleClose();
+    }
+
     handleAddFriend = () => {
+        if (this.state.friendId === "") {
+            this.setState({ noIdSnackbarOpen : true});
+            return
+        }
         const friendList = this.props.user.friends.map((friend) => {
             return friend.id;
         })
-        if (friendList.includes(this.state.friendId)) {
+        if (friendList.includes(Number(this.state.friendId))) {
             this.setState({ dupeSnackbarOpen : true });
             return
         }
+        if (this.state.friendId === this.props.user.id) {
+            this.setState({ selfSnackbarOpen : true});
+            return
+        }
         this.props.addFriend(this.props.user.id, this.state.friendId)
-        this.setState({ friendSnackbarOpen : true });
+        this.setState({ friendSnackbarOpen : true, friendId : "" });
     }
 
     render() {
-        const { classes, user, open, handleClose, fullScreen} = this.props;
+        const { classes, user, open, fullScreen} = this.props;
 
         const linkAdornment =   <CopyToClipboard text={user.id} onCopy={this.handleOnCopy}>
                                     <IconButton color="secondary">
@@ -67,7 +90,7 @@ class FriendDialogue extends React.Component {
             <Dialog fullScreen={fullScreen}
                     TransitionComponent={Transition}
                     open={open}
-                    onClose={handleClose} >
+                    onClose={this.handleDialogClose} >
                 <DialogTitle id="friend-dialog-title">{"Add Friends"}</DialogTitle>
                 <DialogContent>
                     <Typography component="p">
@@ -110,10 +133,10 @@ class FriendDialogue extends React.Component {
                     </Grid>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} className={classes.roseIcon}>
+                    <Button onClick={this.handleDialogClose} className={classes.roseIcon}>
                         Cancel
                     </Button>
-                    <Button onClick={handleClose} className={classes.whiteIcon}>
+                    <Button onClick={this.handleDialogClose} className={classes.whiteIcon}>
                         Done
                     </Button>
                 </DialogActions>
@@ -130,6 +153,14 @@ class FriendDialogue extends React.Component {
                       open={this.state.dupeSnackbarOpen}
                       onClose={this.handleDupeSnackbarClose}
                       message={<span>You are already friends with this user</span>} />
+            <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                      open={this.state.selfSnackbarOpen}
+                      onClose={this.handleSelfSnackbarClose}
+                      message={<span>You're not that lonely are you?</span>} />
+            <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                      open={this.state.noIdSnackbarOpen}
+                      onClose={this.handleNoIdSnackbarClose}
+                      message={<span>Specify a Friend's ID to add</span>} />
             </div>
 
         )

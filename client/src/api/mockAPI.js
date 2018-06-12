@@ -41,12 +41,12 @@ function generateUser() {
                     photos    : mediaImgs,
                     email     : `${lastNames[pick]}@gmail.com`,
                     phone     : "1111111111",
-                    //profileImg : profileImgs[pick],
-                    profileImg : null,
+                    profileImg : profileImgs[pick],
+                    //profileImg : null,
                     profileInfo : "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog."
                   };
 
-    user.friends = generateFriends(user);
+    //user.friends = generateFriends(user);
   
     return user;
 }
@@ -63,8 +63,8 @@ function generateUsers() {
                       email     : `${lastNames[i]}@gmail.com`,
                       phone     : "1111111111",
                       newsFeed  : [],
-                      //profileImg : profileImgs[i],
-                      profileImg : null,
+                      profileImg : profileImgs[i],
+                      //profileImg : null,
                       profileInfo : "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog."
                     };
   

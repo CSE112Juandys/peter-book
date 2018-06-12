@@ -89,17 +89,37 @@ class WallView extends React.Component {
         const photoIcon = <PhotoCamera />;
         const peopleIcon = <People />;
 
-        const friendPhotos = owner.friends.map((friend) => {
+        const friendPhotos = this.userIsOwner() && owner.friends.map((friend) => {
             return friend.profileImg;
         })
 
+        const photoGridAction = this.userIsOwner() && 
+                                <IconButton color="secondary" onClick={this.handlePostModalOpen}>
+                                    <AddAPhoto />
+                                </IconButton>
+
+        const friendGridAction =this.userIsOwner() && 
+                                <IconButton color="secondary" onClick={this.handleFriendModalOpen}>
+                                    <PersonAdd />
+                                </IconButton>
+
+
+        const infoView =    this.userIsOwner() ? 
+                            <div>
+                                <ProfileCard user={user} owner={owner} removeFriend={this.props.removeFriend}/>
+                                <GridCard icon={peopleIcon} title={"Friends"} photos={friendPhotos} action={friendGridAction}/>
+                                <GridCard icon={photoIcon} title={"Photos"} photos={owner.photos} action={photoGridAction}/>
+                            </div> :
+                            <div></div>
+
+
         const postFeed = posts.map((post, key) => {
             return <PostCard post={post} 
-                             user={user} 
-                             key={key} 
-                             handleError={this.handleSnackbarOpen} 
-                             handleHide={this.handlePostHide} 
-                             handleDelete={this.handlePostDelete}/>;
+                            user={user} 
+                            key={key} 
+                            handleError={this.handleSnackbarOpen} 
+                            handleHide={this.handlePostHide} 
+                            handleDelete={this.handlePostDelete}/>;
         })
 
         /* for random number ads randomly spread throughout posts */
@@ -116,26 +136,12 @@ class WallView extends React.Component {
             }
         }
 
-        const photoGridAction = this.userIsOwner() && 
-                                <IconButton color="secondary" onClick={this.handlePostModalOpen}>
-                                    <AddAPhoto />
-                                </IconButton>
-
-        const friendGridAction =this.userIsOwner() && 
-                                <IconButton color="secondary" onClick={this.handleFriendModalOpen}>
-                                    <PersonAdd />
-                                </IconButton>
-
         const postView =    <div>
                                 {postFeed}
                             </div>
-        const infoView =    <div>
-                                <ProfileCard user={user} owner={owner} removeFriend={this.props.removeFriend}/>
-                                <GridCard icon={peopleIcon} title={"Friends"} photos={friendPhotos} action={friendGridAction}/>
-                                <GridCard icon={photoIcon} title={"Photos"} photos={owner.photos} action={photoGridAction}/>
-                            </div>
 
         const writePost = `${user.firstName} ${user.lastName}` !== `${owner.firstName} ${owner.lastName}` && <WritePostCard user={user} owner={owner} handleSubmit={this.handlePostSubmit} handleError={this.handleSnackbarOpen}/>
+
 
 
         return (
