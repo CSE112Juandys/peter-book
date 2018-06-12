@@ -3,7 +3,6 @@ import { card, boxShadow, roseColor, grayColor, defaultFont } from "assets/jss/c
 
 const profileCardStyle = theme => ({
     card: {
-        marginTop: "30px",
         textAlign: "center",
         maxWidth: '400px',
         minWidth: '300px',
@@ -16,8 +15,8 @@ const profileCardStyle = theme => ({
         padding: "0px"
     },
     cardAvatar: {
-        maxWidth: "130px",
-        maxHeight: "130px",
+        width: "130px",
+        height: "130px",
         marginTop: '10px',
         marginBottom: '10px',
         borderRadius: "50%",
@@ -71,6 +70,10 @@ const profileCardStyle = theme => ({
     whiteIcon: {
         color: 'white',
         backgroundColor: roseColor
+    },
+    roseIcon: {
+        color: roseColor,
+        backgroundColor: 'white'
     },
     fullWidth: {
         textAlign: 'center',

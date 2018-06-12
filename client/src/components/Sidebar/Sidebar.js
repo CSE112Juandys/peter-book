@@ -22,6 +22,8 @@ import sidebarStyle from 'assets/jss/cl-components/sidebarStyle';
 
 const Sidebar = ({ ...props }) => {
 
+    console.log(props);
+
     // verifies if routeName is the one active (in browser input)
     function activeRoute(routeName) {
         return props.location.pathname.indexOf(routeName) > -1 ? true : false;
@@ -40,7 +42,7 @@ const Sidebar = ({ ...props }) => {
 
                 return (
                     <div>
-                        <NavLink to={prop.path} activeClassName="active" key={key}>
+                        <NavLink to={prop.path} activeClassName="active" key={key} onClick={props.handleChangeWall}>
                             <ListItem button className={listItemClasses}>
                                 <Dashboard className={activeRoute(prop.path) ? classes.whiteFont : classes.roseFont}/> 
                                 <ListItemText primary={prop.sidebarName} className={classes.itemText + whiteFontClasses} disableTypography={true}/>
@@ -63,15 +65,15 @@ const Sidebar = ({ ...props }) => {
 
                 return (
                     <div>
-                        <NavLink to={prop.path} activeClassName="active" key={key}>
+                        <NavLink to={prop.path} activeClassName="active" key={key} onClick={props.handleChangeWall}>
                             <ListItem button className={listItemClasses}>
-                                {!prop.owner.profileImg ? 
-                                (<Avatar className={ cx(activeRoute(prop.path) ? classes.roseIcon : classes.whiteIcon, classes.itemIcon)}>
+                                {!prop.owner.profileImg ?  (
+                                <Avatar className={ cx(activeRoute(prop.path) ? classes.roseIcon : classes.whiteIcon, classes.itemIcon)}>
                                     <Typography variant="caption" className={activeRoute(prop.path) ? classes.roseFont : classes.whiteFont}>
                                         {prop.icon} 
                                     </Typography>
-                                </Avatar>) :
-                                <img src={prop.owner.profileImg} alt="..." className={classes.linkAvatar} />}
+                                </Avatar>
+                                ):<img src={prop.owner.profileImg} alt="..." className={classes.linkAvatar} />}
                                 <ListItemText primary={prop.sidebarName} className={classes.itemText + whiteFontClasses} disableTypography={true}/>
                             </ListItem>
                         </NavLink>
@@ -87,7 +89,7 @@ const Sidebar = ({ ...props }) => {
                     </IconButton>);
                     
     var profile = <ProfilePaper user={user}
-                                footer={<Button color="rose" round>Generate Friend Link</Button>}/>
+                                footer={<Button color="rose" round onClick={props.handleModalOpen}>Add Friends</Button>}/>
     return (
         <Drawer variant="permanent"
                 classes={{paper: cx(classes.drawerPaper, !props.open && classes.drawerPaperClose)}}
@@ -101,9 +103,9 @@ const Sidebar = ({ ...props }) => {
                     {profile}
                 </Collapse>
             </div>
-            <Divider />
+            <Divider/>
             {utilLinks}
-            <Divider />
+            <Divider/>
             {friendLinks}
         </Drawer>
     );

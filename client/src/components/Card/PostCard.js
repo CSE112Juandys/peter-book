@@ -19,7 +19,8 @@ import { withStyles,
          TextField,
          Grid,
          ListItem,
-         List } from '@material-ui/core';
+         List, 
+         CardMedia} from '@material-ui/core';
 import { generatePost } from 'api/mockAPI';
 import cx from 'classnames';
 import PostList from 'components/List/PostList'
@@ -56,7 +57,6 @@ class PostCard extends React.Component {
         newComment.content = content;
         newPost.comments = this.state.post.comments.concat(newComment);
         this.setState({ post : newPost });
-        console.log(this.state.post);
 
     }
 
@@ -85,8 +85,7 @@ class PostCard extends React.Component {
     render() {
         const { classes, user } = this.props;
         const { open, post, anchorEl } = this.state
-        const { author, recipient, content, image, updated, comments, likes } = post;
-        
+        const { author, recipient, content, media, updated, comments, likes } = post;        
 
         const authorMenuButton =    <div>
                                         <IconButton aria-haspopup="true" onClick={this.handleMenuClick}>
@@ -122,6 +121,8 @@ class PostCard extends React.Component {
                                 {post.comments.length || '0'}
                             </Button>
 
+        const cardMedia = media && <CardMedia image={media} title="cardMedia" style={{height: 0, paddingTop: '56.25%'}}/>
+
         const authorAvatar =    author.profileImg ?
                                 <img src={author.profileImg} alt="..." className={cx(classes.linkAvatar, classes.itemIcon)} /> :
                                 <Avatar className={ cx( classes.whiteIcon, classes.itemIcon)}>
@@ -141,6 +142,7 @@ class PostCard extends React.Component {
                                     action={this.authorIsUser() ? authorMenuButton : userMenuButton}
                         />
                         <Divider inset/>
+                        {cardMedia}
                         <CardContent>
                             <Typography component="p">
                                 {post.content}

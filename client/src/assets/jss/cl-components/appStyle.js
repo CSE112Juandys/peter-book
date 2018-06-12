@@ -2,7 +2,7 @@
 // // // App styles
 // #############################
 
-import { drawerWidth, transition, container } from "assets/jss/cl-components.js";
+import { drawerWidth, transition, container, roseColor } from "assets/jss/cl-components.js";
 
   const appStyle = theme => ({
   wrapper: {
@@ -38,6 +38,7 @@ import { drawerWidth, transition, container } from "assets/jss/cl-components.js"
     right: '20px',
     bottom: '20px',
     zIndex: 1039,
+
   },
   content: {
     marginTop: "10px",

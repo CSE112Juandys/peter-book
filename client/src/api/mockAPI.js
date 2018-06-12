@@ -11,24 +11,38 @@ import tiffany from 'assets/img/friendGridImg/tiffany.jpg';
 import vanessa from 'assets/img/friendGridImg/vanessa.jpg';
 import photoGridImg from 'assets/img/photoGridImg/photoGridImg';
 
+import bike from 'assets/img/photoGridImg/bike.jpg';
+import breakfast from 'assets/img/photoGridImg/breakfast.jpg';
+import burgers from 'assets/img/photoGridImg/burgers.jpg';
+import camera from 'assets/img/photoGridImg/camera.jpg';
+import hats from 'assets/img/photoGridImg/hats.jpg';
+import honey from 'assets/img/photoGridImg/honey.jpg';
+import morning from 'assets/img/photoGridImg/morning.jpg';
+import mushroom from 'assets/img/photoGridImg/mushroom.jpg';
+import olive from 'assets/img/photoGridImg/olive.jpg';
+import plant from 'assets/img/photoGridImg/plant.jpg';
+import star from 'assets/img/photoGridImg/star.jpg';
+import vegetables from 'assets/img/photoGridImg/vegetables.jpg';
 
 const firstNames = ["Luis", "Tiffany", "Patrick", "Crystal", "Jed", "Sherman", "Vanessa", "Katie", "Jeremy", "Arvind", "Jonathan"];
 const lastNames  = ["Llobrera", "Huang", "Hu", "Yung", "Tadios", "Lee", "Chou", "Lau", "Siocon", "Kalithil", "Perapalanunt"];
 const profileImgs = [luis, tiffany, patrick, crystal, jed, sherman, vanessa, katie, jeremy, arvind, jon];
+const mediaImgs = [bike, breakfast, burgers, camera, hats, honey, morning, mushroom, olive, plant, star, vegetables];
 
 
   
 function generateUser() {
     const pick = Math.floor(Math.random() * firstNames.length);
   
-    const user =  { id : 0,
+    const user =  { id : pick,
                     firstName : firstNames[pick],
                     lastName  : lastNames[pick],
                     friends   : [],
-                    photos    : photoGridImg,
+                    photos    : mediaImgs,
                     email     : `${lastNames[pick]}@gmail.com`,
                     phone     : "1111111111",
-                    profileImg : profileImgs[pick],
+                    //profileImg : profileImgs[pick],
+                    profileImg : null,
                     profileInfo : "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog."
                   };
 
@@ -41,15 +55,16 @@ function generateUsers() {
     const users = [];
 
     for (var i = 0; i < firstNames.length; i++) {
-      const user =  { id : 0,
+      const user =  { id : i,
                       firstName : firstNames[i],
                       lastName  : lastNames[i],
                       friends   : [],
-                      photos    : photoGridImg,
+                      photos    : mediaImgs,
                       email     : `${lastNames[i]}@gmail.com`,
                       phone     : "1111111111",
                       newsFeed  : [],
-                      profileImg : profileImgs[i],
+                      //profileImg : profileImgs[i],
+                      profileImg : null,
                       profileInfo : "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog."
                     };
   
@@ -74,7 +89,7 @@ function generatePosts(forUser, numPosts) {
     const { friends } = forUser;
     
     for (var i = 0; i < numPosts; i++) {
-        switch (Math.floor(Math.random() * 2)) {
+        switch (Math.floor(Math.random() * 4)) {
             case 0:
                 // generate a post by user for a friend of user
                 posts.push(generatePost(friends[Math.floor(Math.random() * friends.length)], forUser));
@@ -84,8 +99,12 @@ function generatePosts(forUser, numPosts) {
                 posts.push(generatePost(forUser, friends[Math.floor(Math.random() * friends.length)]));
                 break;
             case 2:
-                // generate an ad
-                posts.push(generateAd());
+                // generate a post by user for a friend of user w image
+                posts.push(generatePost(friends[Math.floor(Math.random() * friends.length)], forUser, true));
+                break;
+            case 3:
+                // generate a post by a friend of user for user w image
+                posts.push(generatePost(forUser, friends[Math.floor(Math.random() * friends.length)], true));
                 break;
             default:
                 break;
@@ -94,7 +113,7 @@ function generatePosts(forUser, numPosts) {
     return posts;
 }
 
-function generatePost(forUser, byUser) {
+function generatePost(forUser, byUser, withMedia=false) {
     const date = new Date()
     const postDate = `${date.getUTCMonth()}-${date.getUTCDate()}-${date.getUTCFullYear()}`
   
@@ -102,12 +121,17 @@ function generatePost(forUser, byUser) {
                       author    : byUser,
                       recipient : forUser,
                       content   : generate(),
+                      media     : null,
                       edited    : true,
                       created   : postDate,
                       updated   : postDate,
                       comments  : [],
                       likes     : 0,
                     }
+
+    if (withMedia) {
+        post.media = mediaImgs[Math.floor(Math.random() * mediaImgs.length)];
+    }
     return post;
 }
 
@@ -144,7 +168,18 @@ var complementsForVerbs =
 ]
 Array.prototype.random = function(){return this[Math.floor(Math.random() * this.length)];};
     
-function generate(){
+function generate() {
+    var result = generateSentence() + generateSentence() + generateSentence();
+    var pick = Math.floor(Math.random() * 5);
+
+    for (var i = 0; i < pick; i++) {
+        result += generateSentence();
+    }
+
+    return result;
+}
+
+function generateSentence(){
     var index = Math.floor(verbs.length * Math.random());
     var tense = tenses.random();
     var subject = subjects.random();
@@ -154,7 +189,7 @@ function generate(){
     str = str.replace("%subject", subject.name).replace("%be", subject.be);
     str = str.replace("%verb", verb[subject.singular ? tense.singular : tense.plural]);
     str = str.replace("%complement", complement.random());
-    return str;
+    return str + ". ";
 }
 /*****************************************************************************/
 

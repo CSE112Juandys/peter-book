@@ -17,6 +17,10 @@ class ProfilePaper extends React.Component {
 
   state = { anchorEl : null };
 
+  componentWillReceiveProps(newProps) {
+    this.setState(this.state);
+  }
+
   handleMenuClick = event => {
     this.setState({
       anchorEl: event.currentTarget,
@@ -49,7 +53,7 @@ class ProfilePaper extends React.Component {
                   </div>
 
     const avatar = !user.profileImg ?
-                  ( <Avatar className={ cx(classes.whiteIcon, classes.profileAvatar, classes.img)}>
+                  ( <Avatar className={ cx(classes.whiteIcon, classes.profileAvatar)}>
                         <Typography variant="display2" className={classes.whiteFont}>
                             {`${user.firstName[0]}${user.lastName[0]}`} 
                         </Typography>

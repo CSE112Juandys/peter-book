@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { Public, MoreVert } from '@material-ui/icons';
+import { Public, MoreVert, Edit } from '@material-ui/icons';
 import { withStyles, Card, CardMedia, CardHeader, Avatar, CardContent, Typography, Grid, IconButton , Menu, MenuItem } from '@material-ui/core';
 import { Button } from 'components';
 
@@ -16,35 +16,41 @@ class ProfileCard extends React.Component {
         });
     };
     
-      handleMenuClose = () => {
+    handleMenuClose = () => {
         this.setState({
             anchorEl: null,
         });
     };
+
+    handleRemoveFriend = () => {
+        this.props.removeFriend(this.props.user.id, this.props.owner.id);
+        this.handleMenuClose();
+    }
     
 
     render() {
-        const { classes, owner } = this.props;
+        const { classes, owner, user } = this.props;
         const { anchorEl } = this.state;
 
         const avatar = <Avatar className={classes.whiteIcon}>
                             <Public />
                         </Avatar >
 
-        const menu =    <div style={{float:'right'}}>
-                            <IconButton variant="raised" onClick={this.handleMenuClick} className={classes.profileMenu}>
+        const menu =    (JSON.stringify(user) !== JSON.stringify(owner)) &&
+                        <div style={{float:'right'}}>
+                            <IconButton onClick={this.handleMenuClick} className={classes.profileMenu}>
                                 <MoreVert />
                             </IconButton>
                             <Menu id="friendMenu"
                                 anchorEl={anchorEl}
                                 open={Boolean(anchorEl)}
-                                onClose={this.handleMenuClose}>
-                                <MenuItem onClick={this.handleMenuClose}>Remove Friend</MenuItem>
+                                onClose={this.handleRemoveFriend}>
+                                <MenuItem onClick={this.handleRemoveFriend}>Remove Friend</MenuItem>
                             </Menu>
                         </div>
 
         const cardAvatar = !owner.profileImg ?
-                            ( <Avatar className={ cx(classes.whiteIcon, classes.cardAvatar, classes.img)}>
+                            ( <Avatar className={ cx(classes.whiteIcon, classes.cardAvatar)}>
                                 <Typography variant="display2" className={classes.whiteFont}>
                                     {`${owner.firstName[0]}${owner.lastName[0]}`} 
                                 </Typography>
@@ -54,6 +60,10 @@ class ProfileCard extends React.Component {
         const cardTitle =   <Typography component="h4" className={classes.profileTitle}>
                                 {`${owner.firstName} ${owner.lastName}`}
                             </Typography>
+
+        const cardInfoAction =  <IconButton className={classes.roseIcon}>
+                                    <Edit />
+                                </IconButton>
         return (
             <div className={classes.fullWidth}>
                 <Card className={classes.card}>
@@ -61,9 +71,12 @@ class ProfileCard extends React.Component {
                                 title={cardTitle} 
                                 action={menu}/>
                     <CardHeader avatar={avatar}
-                                title='intro' />
+                                title='intro' 
+                                action={cardInfoAction} />
                     <CardContent>
+                        <Typography component='p'>
                             {owner.profileInfo}
+                        </Typography>
                     </CardContent>
                 </Card>
             </div>

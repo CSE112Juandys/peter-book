@@ -23,7 +23,7 @@ class GridCard extends React.Component {
 
     render() {
 
-        const { classes, icon, title, photos } = this.props;
+        const { classes, icon, title, photos, action } = this.props;
         const { anchorEl } = this.state;
 
         const bull = <span className={classes.bullet}>•</span>;
@@ -35,8 +35,8 @@ class GridCard extends React.Component {
         const grid =    <GridList cellHeight={100} className={classes.gridList} cols={3}>
                             {photos.map((photo) => {
                                 return(
-                                <GridListTile key={photo.img} cols={1}>
-                                    <img src={photo.img} alt={photo.title} />
+                                <GridListTile key={photo} cols={1}>
+                                    <img src={photo} alt="photo" />
                                 </GridListTile>);
                             })}
                         </GridList>
@@ -45,7 +45,8 @@ class GridCard extends React.Component {
             <div className={classes.fullWidth}>
                 <Card className={classes.card}>
                     <CardHeader avatar={avatar}
-                                title={`${title} • ${photos.length}`} />
+                                title={`${title} • ${photos.length}`} 
+                                action={action}/>
                     <CardContent className={classes.cardContent}>
                         <div>
                             {grid}
