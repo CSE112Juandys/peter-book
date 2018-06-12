@@ -1,14 +1,17 @@
 import React from 'react';
+import Enzyme, {shallow} from 'enzyme';
+import EnzymeAdapter from 'enzyme-adapter-react-16'
 import Demo from '../demo';
-import {configure, shallow} from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-configure ({adapter: new Adapter()})
+
+Enzyme.configure({adapter: new EnzymeAdapter})
 
 describe('Demo renders', ()=>{
   it('renders please', () => {
     let wrapper = shallow(<Demo/>);
+    
     /*eslint-disable */
-    expect(wrapper.find('.App').exists()).toBe(true);
+    console.log(wrapper.debug());
+    expect(wrapper).toBeTruthy;
     /*eslint-enable */
   });
 });
