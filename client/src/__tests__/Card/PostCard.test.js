@@ -6,17 +6,11 @@ import PostCard from '../../components/Card/PostCard';
 
 Enzyme.configure({adapter: new EnzymeAdapter})
 
-
 describe('<PostCard/>', ()=>{
-    let wrapper;
-    beforeEach(() => {
-      wrapper = shallow(<PostCard/>)
-    })
-  
-    it('It renders properly', () => {
-      /*eslint-disable */
-      console.log(wrapper.debug());
-      expect(wrapper).toBeTruthy();
-      /*eslint-enable */
-    });
+  it('Simply Renders', () => {
+    const wrapper = shallow(<PostCard className="pc-yo" />)
+    /*eslint-disable */
+    expect(wrapper.find('.pc-yo')).toHaveLength(1)
+    /*eslint-enable */
   });
+});

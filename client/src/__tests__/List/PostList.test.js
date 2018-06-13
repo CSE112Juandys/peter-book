@@ -10,13 +10,12 @@ Enzyme.configure({adapter: new EnzymeAdapter})
 describe('<PostList/>', ()=>{
     let wrapper;
     beforeEach(() => {
-      wrapper = shallow(<PostList/>)
+      wrapper = shallow(<PostList />)
     })
   
     it('It renders properly', () => {
       /*eslint-disable */
-      console.log(wrapper.debug());
-      expect(wrapper).toBeTruthy();
+      expect(wrapper.exists()).toBe(true);
       /*eslint-enable */
     });
   });

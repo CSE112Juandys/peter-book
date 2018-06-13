@@ -15,7 +15,7 @@ describe('<ProfilePaper/>', ()=>{
   
     it('It renders properly', () => {
       /*eslint-disable */
-      console.log(wrapper.debug());
+      // console.log(wrapper.debug());
       expect(wrapper).toBeTruthy();
       /*eslint-enable */
     });
