@@ -1,9 +1,9 @@
 import firebase from 'firebase';
 
 const config = {
-  apiKey: 'AIzaSyCns5CRMUSwKAjTrvcl31OlE9XroqUDK04',
-  authDomain: 'peter-book-staging.firebaseio.com',
-  databaseURL: 'https://peter-book-staging.firebaseio.com/'
+  apiKey: 'AIzaSyAPX8UFwLI5AoGNjzp6EyCIzQ_U395uEGQ',
+  authDomain: 'helloworld-b7e91.firebaseio.com',
+  databaseURL: 'https://helloworld-b7e91.firebaseio.com/'
 };
 
 firebase.initializeApp(config);

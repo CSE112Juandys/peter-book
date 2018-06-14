@@ -30,10 +30,10 @@ const profileImgs = [luis, tiffany, patrick, crystal, jed, sherman, vanessa, kat
 const mediaImgs = [bike, breakfast, burgers, camera, hats, honey, morning, mushroom, olive, plant, star, vegetables];
 
 
-  
+
 function generateUser() {
-    const pick = Math.floor(Math.random() * firstNames.length);
-  
+    const pick = 0; //Math.floor(Math.random() * firstNames.length);
+
     const user =  { id : pick,
                     firstName : firstNames[pick],
                     lastName  : lastNames[pick],
@@ -47,7 +47,7 @@ function generateUser() {
                   };
 
     //user.friends = generateFriends(user);
-  
+
     return user;
 }
 
@@ -67,7 +67,7 @@ function generateUsers() {
                       //profileImg : null,
                       profileInfo : "The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog."
                     };
-  
+
       users.push(user);
     }
     return users;
@@ -87,7 +87,7 @@ function generateFriends(forUser) {
 function generatePosts(forUser, numPosts) {
     const posts = [];
     const { friends } = forUser;
-    
+
     for (var i = 0; i < numPosts; i++) {
         switch (Math.floor(Math.random() * 4)) {
             case 0:
@@ -116,7 +116,7 @@ function generatePosts(forUser, numPosts) {
 function generatePost(forUser, byUser, withMedia=false) {
     const date = new Date()
     const postDate = `${date.getUTCMonth()}-${date.getUTCDate()}-${date.getUTCFullYear()}`
-  
+
     const post    = { id : 0,
                       author    : byUser,
                       recipient : forUser,
@@ -143,12 +143,12 @@ function generateAd() {
 //RAND SENTENCE GENERATOR FOR POSTS
 /*****************************************************************************/
 var verbs =
-[   
+[
     ["go to", "goes to", "going to", "went to", "gone to"],
     ["look at", "looks at", "looking at", "looked at", "looked at"],
     ["choose", "chooses", "choosing", "chose", "chosen"]
 ];
-var tenses = 
+var tenses =
 [
     {name:"Present", singular:1, plural:0, format:"%subject %verb %complement"},
     {name:"Past", singular:3, plural:3, format:"%subject %verb %complement"},
@@ -167,7 +167,7 @@ var complementsForVerbs =
     ["a book for reading", "a dvd for tonight"]
 ]
 Array.prototype.random = function(){return this[Math.floor(Math.random() * this.length)];};
-    
+
 function generate() {
     var result = generateSentence() + generateSentence() + generateSentence();
     var pick = Math.floor(Math.random() * 5);
@@ -194,7 +194,7 @@ function generateSentence(){
 /*****************************************************************************/
 
 export {
-    generateUser, 
+    generateUser,
     generateUsers,
     generateFriends,
     generatePost,
