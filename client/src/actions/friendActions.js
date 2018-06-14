@@ -33,11 +33,13 @@ export function dbDeleteFriend(friendA, friendB) {
 export function dbAddFriend(friendIdA, friendIdB) {
     return dispatch => {
         ///////////////////////////////////////////////////////////////////////////
+        const refA = database.ref('users/' + friendIdA + '/friends/');
+        const refB = database.ref('users/' + friendIdB + '/friends/');
 
         // ENCRYPTION HERE?
 
-        const refBFriend = database.ref('users/' + friendIdA + '/friends/').push();
-        const refAFriend = database.ref('users/' + friendIdB + '/friends/').push();
+        const refBFriend = refB.push();
+        const refAFriend = refA.push();
 
         // Read in user object to add to friend's friends list 
         const userToAddRef = database.ref('users/' + friendIdA);
@@ -91,10 +93,7 @@ export function dbReadAllFriends(userId) {
         const friendsRef = database.ref('users/' + userId + '/friends/');
         friendsRef.once('value')
         .then((snapshot) => {
-            // DECRYPT HERE
-            const friendsDecrypt = Object.values(snapshot.val());
-            //
-            dispatch(readAllFriends(friendsDecrypt));
+            dispatch(readAllFriends(Object.values(snapshot.val())));
         })
         .catch((error) => {
             console.log('READ ALL FRIENDS FAIL');
