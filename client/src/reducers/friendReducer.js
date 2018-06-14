@@ -9,7 +9,7 @@ export function friendReducer(state = initialState.friends, action) {
             return [
                 ...state,
                 Object.assign({}, action.friend)
-            ]
+            ];
 
         case ActionTypes.DELETE_FRIEND:
             console.log(action);
@@ -17,6 +17,12 @@ export function friendReducer(state = initialState.friends, action) {
                 ...state.filter((friend) => {
                     return friend.id !== action.friendId
                 })
+            ];
+
+        case ActionTypes.READ_ALL_FRIENDS:
+            console.log(action);
+            return [
+                ...action.friends
             ];
             
         default:

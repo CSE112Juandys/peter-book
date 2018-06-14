@@ -3,7 +3,7 @@ import database from 'database';
 
 export function dbUpdateUser(user) {
     return dispatch => {
-        const userRef = dabase.ref('users/' + user.id);
+        const userRef = database.ref('users/' + user.id);
 
         userRef.set({user})
         .then(() => {

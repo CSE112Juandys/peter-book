@@ -1,16 +1,9 @@
 const actionTypes = {
     /* post actions */
-    ADD_IMAGE_POST : 'ADD_IMAGE_POST',
-    ADD_VIDEO_POST : 'ADD_VIDEO_POST',
     ADD_POST : 'ADD_POST',
-    UPDATE_POST : 'UPDATE_POST',
     DELETE_POST : 'DELETE_POST',
-    ADD_LIST_POST : 'ADD_LIST_POST',
-    CLEAR_ALL_DATA_POST : 'CLEAR_ALL_DATA_POST',
-
-    /* image uploader actions */
-    OPEN_IMAGE_UPLOADER : 'OPEN_IMAGE_UPLOADER',
-    OPEN_IMAGE_EDITOR : 'OPEN_IMAGE_EDITOR',
+    UPDATE_POST : 'UPDATE_POST',
+    READ_ALL_POSTS : 'READ_ALL_POSTS',
 
     /* users action */
     UPDATE_USER : 'UPDATE_USER',
@@ -18,6 +11,7 @@ const actionTypes = {
     /* friend actions */
     ADD_FRIEND : 'ADD_FRIEND',
     DELETE_FRIEND : 'DELETE_FRIEND',
+    READ_ALL_FRIENDS : 'READ_ALL_FRIENDS',
     CLEAR_ALL_FRIENDS : 'CLEAR_ALL_FRIENDS',
 
     /* authorize actions */

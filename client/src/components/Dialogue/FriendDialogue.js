@@ -64,12 +64,13 @@ class FriendDialogue extends React.Component {
             this.setState({ dupeSnackbarOpen : true });
             return
         }
-        if (this.state.friendId === this.props.user.id) {
+        if (Number(this.state.friendId) === this.props.user.id) {
             this.setState({ selfSnackbarOpen : true});
             return
         }
         this.props.addFriend(this.props.user.id, this.state.friendId)
-        this.setState({ friendSnackbarOpen : true, friendId : "" });
+        this.setState({ friendSnackbarOpen : true });
+        this.handleDialogClose();
     }
 
     render() {
@@ -135,9 +136,6 @@ class FriendDialogue extends React.Component {
                 <DialogActions>
                     <Button onClick={this.handleDialogClose} className={classes.roseIcon}>
                         Cancel
-                    </Button>
-                    <Button onClick={this.handleDialogClose} className={classes.whiteIcon}>
-                        Done
                     </Button>
                 </DialogActions>
             </Dialog>

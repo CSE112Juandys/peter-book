@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Hidden, Snackbar, Button, Slide, IconButton} from '@material-ui/core';
+import { Grid, Hidden, Snackbar, Button, Slide, IconButton, Card} from '@material-ui/core';
 import { PhotoCamera, People, Edit, AddAPhoto, PersonAdd } from '@material-ui/icons';
 import { generatePost } from 'api/mockAPI';
 import GridCard from 'components/Card/GridCard';
@@ -27,14 +27,19 @@ class WallView extends React.Component {
         this.state = { posts, owner, user, openPostModal : false, openFriendModal : false, snackbarOpen : false };
     }
 
+    componentWillReceiveProps(newProps) {
+        this.setState({ posts : newProps.posts });
+    }
+
     userIsOwner = () => {
         return JSON.stringify(this.state.user) === JSON.stringify(this.state.owner);
     }
 
     handleSubmitPost = (post) => {
         const newPosts = this.state.posts;
-        newPosts.unshift(post);
-        this.setState({ posts : newPosts });
+        // newPosts.unshift(post);
+        // this.setState({ posts : newPosts });
+        this.props.addPost(post)
     }
 
     handleFriendModalOpen = () => {
@@ -61,17 +66,8 @@ class WallView extends React.Component {
         this.setState({ snackbarOpen : false });
     };
 
-    handlePostSubmit = (content) => {
-        const post = generatePost(this.state.owner, this.state.user);
-        post.content = content;
-        const newPosts = this.state.posts
-        newPosts.unshift(post);
-        this.setState({ posts : newPosts });
-        console.log(this.state.posts);
-    }
-
     handlePostDelete = (postToDelete) => {
-        this.handlePostHide(postToDelete);
+        this.props.removePost(postToDelete);
     }
 
     handlePostHide = (postToHide) => {
@@ -110,17 +106,24 @@ class WallView extends React.Component {
                                 <GridCard icon={peopleIcon} title={"Friends"} photos={friendPhotos} action={friendGridAction}/>
                                 <GridCard icon={photoIcon} title={"Photos"} photos={owner.photos} action={photoGridAction}/>
                             </div> :
-                            <div></div>
+                            <div><ProfileCard user={user} owner={owner} removeFriend={this.props.removeFriend}/></div>
 
 
-        const postFeed = posts.map((post, key) => {
+        var postFeed = posts.map((post, key) => {
             return <PostCard post={post} 
                             user={user} 
                             key={key} 
                             handleError={this.handleSnackbarOpen} 
                             handleHide={this.handlePostHide} 
-                            handleDelete={this.handlePostDelete}/>;
+                            handleDelete={this.handlePostDelete}
+                            updatePost={this.props.updatePost}/>;
         })
+
+        if (postFeed.length === 0) {
+            postFeed =  <div style={{height: '100%', width: '100%', textAlign: 'center', verticalAlign: 'middle'}}>
+                            Share a Post with a friend to see more content.
+                        </div>
+        }
 
         /* for random number ads randomly spread throughout posts */
         /*
@@ -139,10 +142,6 @@ class WallView extends React.Component {
         const postView =    <div>
                                 {postFeed}
                             </div>
-
-        const writePost = `${user.firstName} ${user.lastName}` !== `${owner.firstName} ${owner.lastName}` && <WritePostCard user={user} owner={owner} handleSubmit={this.handlePostSubmit} handleError={this.handleSnackbarOpen}/>
-
-
 
         return (
             <div>
@@ -176,7 +175,11 @@ class WallView extends React.Component {
                 <Button variant="fab" color="secondary" style={buttonStyle} onClick={this.handlePostModalOpen}>
                     <Edit />
                 </Button>
-                <PostDialogue open={this.state.openPostModal} user={user} owner={owner} handleClose={this.handlePostModalClose} handleSubmit={this.handleSubmitPost}/>
+                <PostDialogue open={this.state.openPostModal} 
+                              user={user} 
+                              owner={owner} 
+                              handleClose={this.handlePostModalClose} 
+                              handleSubmit={this.handleSubmitPost}/>
                 <FriendDialogue open={this.state.openFriendModal} 
                                 handleClose={this.handleFriendModalClose}
                                 user={user} 

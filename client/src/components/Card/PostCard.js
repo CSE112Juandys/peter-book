@@ -16,16 +16,10 @@ import { withStyles,
          IconButton,
          Menu,
          MenuItem,
-         TextField,
-         Grid,
-         ListItem,
-         List, 
          CardMedia} from '@material-ui/core';
 import { generatePost } from 'api/mockAPI';
 import cx from 'classnames';
 import PostList from 'components/List/PostList'
-import EmptyView from 'views/EmptyView';
-import { CommentPaper } from 'components';
 
 import PostCardStyle from 'assets/jss/cl-components/postCardStyle';
 
@@ -54,10 +48,11 @@ class PostCard extends React.Component {
         const newPost = this.state.post;
         const recipient = this.authorIsUser() ? this.state.post.recipient : this.state.post.author
         const newComment = generatePost(recipient, this.props.user);
+        
         newComment.content = content;
         newPost.comments = this.state.post.comments.concat(newComment);
-        this.setState({ post : newPost });
-
+        this.props.updatePost(newPost);
+        //this.setState({ post : newPost });
     }
 
     handleCollapseTriggered = () => {

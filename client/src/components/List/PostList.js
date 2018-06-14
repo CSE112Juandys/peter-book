@@ -1,7 +1,6 @@
 import React from 'react';
 import { Send } from '@material-ui/icons';
 import { Avatar, Input, List, ListItem, Grid, TextField, withStyles, Typography, Divider, IconButton, InputAdornment } from '@material-ui/core';
-import { Button } from 'components';
 import cx from 'classnames';
 import postListStyle from 'assets/jss/cl-components/postListStyle';
 import PostListItem from 'components/ListItem/PostListItem';

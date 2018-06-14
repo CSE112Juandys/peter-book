@@ -3,23 +3,18 @@ import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
-import { Edit } from '@material-ui/icons';
-import { withStyles, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import cx from 'classnames';
 import WallView from 'views/WallView';
-import { Sidebar, Header } from 'components';
-import { userRoutes } from 'routes/friends';
-import { generateUsers, generateFriends, generatePosts } from 'api/mockAPI';
+import { Sidebar } from 'components';
 import appStyle from 'assets/jss/cl-components/appStyle';
-import FriendModal from 'components/Modal/FriendModal';
 
 import { connect } from 'react-redux';
 import { updateFirebaseStore } from 'actions/updateFirebaseStoreActions';
-import { dbDeleteFriend, dbAddFriend } from 'actions/friendActions';
+import { dbDeleteFriend, dbAddFriend, dbReadAllFriends} from 'actions/friendActions';
+import { dbAddPost, dbDeletePost, dbUpdatePost, dbReadAllPosts } from 'actions/postActions';
+import { dbUpdateUser } from 'actions/userActions';
 import FriendDialogue from '../components/Dialogue/FriendDialogue';
-
-//const posts = generatePosts(user, 50);
-const posts = [];
 
 
 
@@ -30,19 +25,18 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {  open           : true,
+        this.state = {  open            : true,
                         openFriendModal : false,
                         user            : this.props.user,
-                        friends        : this.props.friends };
+                        friends         : this.props.friends,
+                        posts           : this.props.posts};
     }
 
     componentWillReceiveProps(newProps) {
-        console.log('NEW PROPS RECEIVED')
-        console.log(newProps);
-        const { friends, user } = newProps;
-        const newUser = this.state.user;
+        const { friends, posts, user } = newProps;
+        const newUser = user;
         newUser.friends = friends;
-        this.setState({ friends, user : newUser });
+        this.setState({ friends, posts, user : newUser });
     }
 
     handleFriendModalOpen = () => {
@@ -68,13 +62,15 @@ class App extends React.Component {
             const ps = new PerfectScrollbar(this.refs.mainPanel);
         }
 
+        this.props.onGetFriends(this.state.user.id);
+        this.props.onGetPosts(this.state.user);
         // push dummy user objects to firebase
         //this.props.onUpdateFirebaseStore(generateUsers());
     }
 
     render() {
         console.log(this.props);
-        const { user } = this.state;
+        const { user, posts } = this.state;
 
         const userRoutes = [{   owner       : user,
                                 util        : true,
@@ -111,7 +107,14 @@ class App extends React.Component {
                     }
                     else if (prop.util) {
                         return <Route path={prop.path}
-                                      render={() => <WallView posts={posts} owner={user} user={user} addFriend={this.props.onAddFriend} removeFriend={this.props.onRemoveFriend}/>}
+                                      render={() => <WallView posts={posts} 
+                                                              owner={user} 
+                                                              user={user} 
+                                                              addFriend={this.props.onAddFriend} 
+                                                              removeFriend={this.props.onRemoveFriend}
+                                                              addPost={this.props.onAddPost}
+                                                              removePost={this.props.onRemovePost}
+                                                              updatePost={this.props.onUpdatePost}/>}
                                       key={key}/>
                     }
                     const friendPosts = posts.filter((post) => {
@@ -121,7 +124,14 @@ class App extends React.Component {
                                  prop.owner.lastName === post.recipient.lastName));
                     });
                     return <Route path={prop.path}
-                                  render={() => <WallView posts={friendPosts} owner={prop.owner} user={user} addFriend={this.props.onAddFriend} removeFriend={this.props.onRemoveFriend}/>}
+                                  render={() => <WallView posts={friendPosts} 
+                                                          owner={prop.owner} 
+                                                          user={user} 
+                                                          addFriend={this.props.onAddFriend} 
+                                                          removeFriend={this.props.onRemoveFriend}
+                                                          addPost={this.props.onAddPost}
+                                                          removePost={this.props.onRemovePost}
+                                                          updatePost={this.props.onUpdatePost}/>}
                                   key={key}/>
                 })}
             </Switch>    
@@ -164,11 +174,10 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         user    : state.user,
         friends : state.friends,
-        //posts   : state.posts,
+        posts   : state.posts,
         //auth    : state.auth
     };
 }
@@ -176,8 +185,17 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onUpdateFirebaseStore : (dataToAdd) => dispatch(updateFirebaseStore(dataToAdd)),
-        onAddFriend : (friendIdA, friendIdB) => dispatch(dbAddFriend(friendIdA, friendIdB)),
-        onRemoveFriend : (friendIdA, friendIdB) => dispatch(dbDeleteFriend(friendIdA, friendIdB)),
+        //FRIENDS--------------------------------------------------------------
+        onGetFriends    : (userId) => dispatch(dbReadAllFriends(userId)),
+        onAddFriend     : (friendIdA, friendIdB) => dispatch(dbAddFriend(friendIdA, friendIdB)),
+        onRemoveFriend  : (friendA, friendB) => dispatch(dbDeleteFriend(friendA, friendB)),
+        //USER-----------------------------------------------------------------
+        onUpdateUser : (newUser) => dispatch(dbUpdateUser(newUser)),
+        //POSTS----------------------------------------------------------------
+        onAddPost     : (post) => dispatch(dbAddPost(post)),
+        onRemovePost  : (post) => dispatch(dbDeletePost(post)),
+        onUpdatePost  : (post) => dispatch(dbUpdatePost(post)),
+        onGetPosts    : (user) => dispatch(dbReadAllPosts(user)),
     };
 }
 

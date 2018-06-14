@@ -23,7 +23,7 @@ class ProfileCard extends React.Component {
     };
 
     handleRemoveFriend = () => {
-        this.props.removeFriend(this.props.user.id, this.props.owner.id);
+        this.props.removeFriend(this.props.user, this.props.owner);
         this.handleMenuClose();
     }
     
