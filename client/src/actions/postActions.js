@@ -36,12 +36,9 @@ export function dbAddPost(post) {
             var protectedMedia = media;
 
             const realKey = sessionStorage.getItem('plain');
+            // null check
             if (content) {
               protectedContent = encrypt(content, realKey);
-            }
-            // null check
-            if (media) {
-              protectedMedia = encrypt(media, realKey);
             }
 
             const dbPost = {    id,
@@ -64,7 +61,7 @@ export function dbAddPost(post) {
                                         author : dbAuthor,
                                         recipient : dbRecipient,
                                         content : protectedContent,
-                                        media: protectedMedia,
+                                        media,
                                         edited,
                                         created,
                                         updated,
@@ -182,19 +179,6 @@ export function dbReadAllPosts(forUser) {
 
                       const realKey = sessionStorage.getItem('plain');
                       post.content = decrypt(post.content, realKey);
-                  }).catch((error) => {
-                      console.log(error);
-                  });
-                }
-                if (post.media) {
-                  const keyRef = database.ref('users/' + post.author.id + '/datakeys/' + post.recipient.id);
-
-                  keyRef.once('value').then((snapshot) => {
-                      var cipher = snapshot.val();
-                      kmsDecrypt(sessionStorage.getItem('atok'), cipher);
-
-                      const realKey = sessionStorage.getItem('plain');
-                      post.media = decrypt(post.media, realKey);
                   }).catch((error) => {
                       console.log(error);
                   });
