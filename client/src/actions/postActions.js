@@ -131,12 +131,7 @@ export function dbUpdatePost(post) {
         const authorRef    = database.ref('users/' + author.id + '/posts/' + dbAuthor);
         const recipientRef = database.ref('users/' + recipient.id + '/posts/' + dbRecipient);
 
-        authorRef.once('value').then((snapshot) => {
-          changed.content = snapshot.val().content;
-          if (snapshot.val().media) {
-            changed.media = snapshot.val().media;
-          }
-          authorRef.set(changed)
+          authorRef.set(post)
           .then(() => {
               console.log('AUTHOR POST UPDATE SUCCESS');
           })
@@ -145,7 +140,7 @@ export function dbUpdatePost(post) {
               console.log(error);
           })
 
-          recipientRef.set(changed)
+          recipientRef.set(post)
           .then(() => {
               console.log('RECIPIENT POST UPDATE SUCCESS');
               dispatch(updatePost(post))
@@ -154,7 +149,6 @@ export function dbUpdatePost(post) {
               console.log('RECIPIENT POST UPDATE FAIL');
               console.log(error);
           })
-        })
     }
 }
 
