@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { Public, MoreVert, Edit } from '@material-ui/icons';
+import { Public, MoreVert, Edit, RemoveCircle } from '@material-ui/icons';
 import { withStyles, Card, CardMedia, CardHeader, Avatar, CardContent, Typography, Grid, IconButton , Menu, MenuItem } from '@material-ui/core';
 import ProfileDialogue from 'components/Dialogue/ProfileDialogue';
 
@@ -46,15 +46,9 @@ class ProfileCard extends React.Component {
 
         const menu =    (JSON.stringify(user) !== JSON.stringify(owner)) &&
                         <div style={{float:'right'}}>
-                            <IconButton onClick={this.handleMenuClick} className={classes.profileMenu}>
-                                <MoreVert />
+                            <IconButton onClick={this.handleRemoveFriend} className={classes.profileMenu}>
+                                <RemoveCircle />
                             </IconButton>
-                            <Menu id="friendMenu"
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={this.handleRemoveFriend}>
-                                <MenuItem onClick={this.handleRemoveFriend}>Remove Friend</MenuItem>
-                            </Menu>
                         </div>
 
         const cardAvatar = !owner.profileImg ?

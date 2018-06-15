@@ -20,6 +20,7 @@ import { withStyles,
 import { generatePost } from 'api/mockAPI';
 import cx from 'classnames';
 import PostList from 'components/List/PostList'
+import EditPostDialogue from 'components/Dialogue/EditPostDialogue';
 
 import PostCardStyle from 'assets/jss/cl-components/postCardStyle';
 
@@ -28,6 +29,7 @@ class PostCard extends React.Component {
         super(props);
 
         this.state = {  open : false,
+                        openEditPost : false,
                         anchorEl : null,
                         post : props.post };
     }
@@ -47,12 +49,33 @@ class PostCard extends React.Component {
         }
         const newPost = this.state.post;
         const recipient = this.authorIsUser() ? this.state.post.recipient : this.state.post.author
-        const newComment = generatePost(recipient, this.props.user);
+        recipient.posts = null;
+        recipient.friends = null;
+
+        const newUser = this.props.user;
+        newUser.posts = null;
+        newUser.friends = null;
+        const newComment = generatePost(recipient, newUser);
 
         newComment.content = content;
         newPost.comments = this.state.post.comments.concat(newComment);
         this.props.updatePost(newPost);
         //this.setState({ post : newPost });
+    }
+
+    handlePostUpdate = (postContent) => {
+        const newPost = this.state.post;
+        newPost.content = postContent.content;
+        newPost.media   = postContent.media;
+        this.props.updatePost(newPost);
+    }
+
+    handleOpenEditPost = () => {
+        this.setState({ openEditPost : true});
+    }
+
+    handleCloseEditPost = () => {
+        this.setState({ openEditPost : false});
     }
 
     handleCollapseTriggered = () => {
@@ -92,7 +115,7 @@ class PostCard extends React.Component {
                                             onClose={this.handleMenuClose}
                                             >
                                             <MenuItem onClick={this.handlePostHide}>Hide</MenuItem>
-                                            <MenuItem onClick={this.handleMenuClose}>Edit</MenuItem>
+                                            <MenuItem onClick={this.handleOpenEditPost}>Edit</MenuItem>
                                             <MenuItem onClick={this.handlePostDelete}>Delete</MenuItem>
                                         </Menu>
                                     </div>
@@ -152,6 +175,11 @@ class PostCard extends React.Component {
                             </div>
                         </Collapse>
                     </Card>
+                    <EditPostDialogue open={this.state.openEditPost}
+                              user={user}
+                              post={post}
+                              handleClose={this.handleCloseEditPost}
+                              handleUpdate={this.handlePostUpdate}/>
                 </div>
         );
     }
