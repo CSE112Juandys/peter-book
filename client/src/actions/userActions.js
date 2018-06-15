@@ -1,11 +1,11 @@
 import ActionTypes from 'constants/actionTypes';
-import database from 'database';
+import { database } from 'fire';
 
 export function dbUpdateUser(user) {
     return dispatch => {
         const userRef = database.ref('users/' + user.id);
 
-        userRef.set({user})
+        userRef.set(user)
         .then(() => {
             console.log('UPDATE USER SUCCESS');
             dispatch(updateUser(user));
@@ -16,7 +16,7 @@ export function dbUpdateUser(user) {
     }
 }
 
-function updateUser(user) {
+export function updateUser(user) {
     return {
         type : ActionTypes.UPDATE_USER,
         user

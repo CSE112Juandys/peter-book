@@ -1,5 +1,5 @@
 import ActionTypes from 'constants/actionTypes';
-import database from 'database';
+import { database } from 'fire';
 
 export function dbDeleteFriend(friendA, friendB) {
     return dispatch => {
@@ -48,7 +48,16 @@ export function dbAddFriend(friendIdA, friendIdB) {
 
             // Update user A's list of friend ids
             const { id, firstName, lastName, profileImg, profileInfo } = snapshot.val();
-            const friend = { id, dbSelfKey : refBFriend.key, dbFriendKey : refAFriend.key, firstName, lastName, profileImg, profileInfo };
+            const friend = {    id, 
+                                dbSelfKey : refBFriend.key, 
+                                dbFriendKey : refAFriend.key, 
+                                firstName, 
+                                lastName,
+                                profileInfo };
+
+            if (profileImg) {
+                friend.profileImg = profileImg;
+            }
 
             refBFriend.set(friend)
             .then(() => {
@@ -69,7 +78,15 @@ export function dbAddFriend(friendIdA, friendIdB) {
  
             // Update user A's list of friend ids
             const { id, firstName, lastName, profileImg, profileInfo } = snapshot.val();
-            const friend = { id, dbSelfKey : refAFriend.key, dbFriendKey : refBFriend.key, firstName, lastName, profileImg, profileInfo };
+            const friend = {    id, 
+                                dbSelfKey : refAFriend.key, 
+                                dbFriendKey : refBFriend.key, 
+                                firstName, lastName, 
+                                profileInfo };
+
+            if (profileImg) {
+                friend.profileImg = profileImg;
+            }
 
             refAFriend.set(friend)
             .then(() => {

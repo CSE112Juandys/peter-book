@@ -1,5 +1,5 @@
 import ActionTypes from 'constants/actionTypes';
-import database from 'database';
+import { database } from 'fire';
 
 export function dbAddPost(post) {
     console.log('yun');
@@ -9,14 +9,20 @@ export function dbAddPost(post) {
         const dbAuthor = {  id          : author.id,
                             firstName   : author.firstName,
                             lastName    : author.lastName,
-                            profileImg  : author.profileImg
                          }
+
+        if (author.profileImg) {
+            dbAuthor.profileImg = author.profileImg
+        }
         
         const dbRecipient = {   id          : recipient.id,
                                 firstName   : recipient.firstName,
                                 lastName    : recipient.lastName,
-                                profileImg  : recipient.profileImg
                             }
+
+        if (recipient.profileImg) {
+            dbRecipient.profileImg = recipient.profileImg
+        }
 
         const authorId    = author.id;
         const recipientId = recipient.id;

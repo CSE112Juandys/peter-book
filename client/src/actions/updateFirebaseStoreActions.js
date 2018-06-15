@@ -1,5 +1,5 @@
 import ActionTypes from 'constants/actionTypes';
-import database from 'database';
+import { database } from 'fire';
 
 export function updateFirebaseStore(dataToAdd) {
     return dispatch => {

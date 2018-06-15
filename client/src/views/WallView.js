@@ -100,13 +100,7 @@ class WallView extends React.Component {
                                 </IconButton>
 
 
-        const infoView =    this.userIsOwner() ? 
-                            <div>
-                                <ProfileCard user={user} owner={owner} removeFriend={this.props.removeFriend}/>
-                                <GridCard icon={peopleIcon} title={"Friends"} photos={friendPhotos} action={friendGridAction}/>
-                                <GridCard icon={photoIcon} title={"Photos"} photos={owner.photos} action={photoGridAction}/>
-                            </div> :
-                            <div><ProfileCard user={user} owner={owner} removeFriend={this.props.removeFriend}/></div>
+        const infoView =   <div><ProfileCard user={user} owner={owner} removeFriend={this.props.removeFriend} updateUser={this.props.updateUser}/></div>
 
 
         var postFeed = posts.map((post, key) => {
@@ -139,7 +133,7 @@ class WallView extends React.Component {
             }
         }
 
-        const postView =    <div>
+        const postView =    <div style={{marginRight:'10px'}}>
                                 {postFeed}
                             </div>
 

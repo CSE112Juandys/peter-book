@@ -17,8 +17,9 @@ const profileCardStyle = theme => ({
     cardAvatar: {
         width: "130px",
         height: "130px",
-        maxWidth : '130px',
-        marginTop: '10px',
+        maxWidth : "130px",
+        maxHeight : '130px',
+        margin: "5px auto 0",
         marginBottom: '10px',
         borderRadius: "50%",
         ...boxShadow

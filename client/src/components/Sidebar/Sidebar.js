@@ -21,9 +21,6 @@ import { ProfilePaper, Button } from 'components';
 import sidebarStyle from 'assets/jss/cl-components/sidebarStyle';
 
 const Sidebar = ({ ...props }) => {
-
-    console.log(props);
-
     // verifies if routeName is the one active (in browser input)
     function activeRoute(routeName) {
         return props.location.pathname.indexOf(routeName) > -1 ? true : false;
@@ -89,7 +86,8 @@ const Sidebar = ({ ...props }) => {
                     </IconButton>);
                     
     var profile = <ProfilePaper user={user}
-                                footer={<Button color="rose" round onClick={props.handleModalOpen}>Add Friends</Button>}/>
+                                footer={<Button color="rose" round onClick={props.handleModalOpen}>Add Friends</Button>}
+                                handleLogOut={props.handleLogOut}/>
     return (
         <Drawer variant="permanent"
                 classes={{paper: cx(classes.drawerPaper, !props.open && classes.drawerPaperClose)}}
