@@ -27,12 +27,10 @@ export function dbAddPost(post) {
         const authorId    = author.id;
         const recipientId = recipient.id;
         
-        const postRef = database.ref('posts/' + post.id);
-
         const authorRef    = database.ref('users/' + authorId + '/posts/').push();
         const recipientRef = database.ref('users/' + recipientId + '/posts/').push();
 
-        const dbPost = {    id, 
+        const dbPost = {    id : authorRef.key + recipientRef.key, 
                             dbAuthor : authorRef.key,
                             dbRecipient : recipientRef.key,
                             author : dbAuthor, 
