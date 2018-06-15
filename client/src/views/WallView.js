@@ -82,22 +82,6 @@ class WallView extends React.Component {
         console.log(this.props);
         const { posts, owner, user} = this.state;
 
-        const photoIcon = <PhotoCamera />;
-        const peopleIcon = <People />;
-
-        const friendPhotos = this.userIsOwner() && owner.friends.map((friend) => {
-            return friend.profileImg;
-        })
-
-        const photoGridAction = this.userIsOwner() && 
-                                <IconButton color="secondary" onClick={this.handlePostModalOpen}>
-                                    <AddAPhoto />
-                                </IconButton>
-
-        const friendGridAction =this.userIsOwner() && 
-                                <IconButton color="secondary" onClick={this.handleFriendModalOpen}>
-                                    <PersonAdd />
-                                </IconButton>
 
 
         const infoView =   <div><ProfileCard user={user} owner={owner} removeFriend={this.props.removeFriend} updateUser={this.props.updateUser}/></div>

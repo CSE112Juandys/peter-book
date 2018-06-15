@@ -101,6 +101,11 @@ export function dbDeletePost(post) {
 export function dbUpdatePost(post) {
     return dispatch => {
         const { dbAuthor, dbRecipient, author, recipient } = post
+        post.author.friends = null;
+        post.author.posts = null;
+
+        post.recipient.friends = null;
+        post.recipient.posts = null;
         
         const authorRef    = database.ref('users/' + author.id + '/posts/' + dbAuthor);
         const recipientRef = database.ref('users/' + recipient.id + '/posts/' + dbRecipient);
