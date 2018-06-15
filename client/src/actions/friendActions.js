@@ -133,7 +133,7 @@ function addFriend(friend) {
     };
 }
 
-function readAllFriends(friends) {
+export function readAllFriends(friends) {
     return {
         type : ActionTypes.READ_ALL_FRIENDS,
         friends

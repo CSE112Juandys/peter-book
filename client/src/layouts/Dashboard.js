@@ -44,7 +44,16 @@ class App extends React.Component {
             this.props.onGetFriends(user.id);
             this.props.onGetPosts(user);
         }
-        this.setState({newUser, auth});
+        this.setState({user: newUser, auth, posts});
+        if (!auth && this.state.auth) {
+            this.setState ({
+                  open            : true,
+                    openFriendModal : false,
+                    user            : null,
+                    friends         : [],
+                    posts           : [],
+                    auth            : false });
+            }
     }
 
     handleFriendModalOpen = () => {
@@ -79,7 +88,7 @@ class App extends React.Component {
     render() {
         console.log(this.props);
         console.log(this.state);
-        const { user, posts } = this.props;
+        const { user, posts } = this.state;
 
         if (this.props.auth) {
             const userRoutes = [{   owner       : user,

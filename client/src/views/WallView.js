@@ -128,7 +128,7 @@ class WallView extends React.Component {
 
         /* for ads every n posts */
         for (var i = 1; i < posts.length; i++) {
-            if (i % 6 === 0) {
+            if (i % 2 === 0) {
                 postFeed.splice(i, 0, <AdCard/>);
             }
         }

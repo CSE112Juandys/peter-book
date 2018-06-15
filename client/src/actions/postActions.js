@@ -140,7 +140,7 @@ export function dbReadAllPosts(forUser) {
                 return post;
             })
             //
-            dispatch(readAllPosts(postsDecrypt));
+            dispatch(readAllPosts(postsDecrypt.reverse()));
         })
         .catch((error) => {
             
@@ -169,7 +169,7 @@ function updatePost(post) {
     };
 }
 
-function readAllPosts(posts) {
+export function readAllPosts(posts) {
     return {
         type : ActionTypes.READ_ALL_POSTS,
         posts,

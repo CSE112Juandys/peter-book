@@ -1,5 +1,7 @@
 import ActionTypes from 'constants/actionTypes';
 import { updateUser } from 'actions/userActions';
+import { readAllPosts } from 'actions/postActions';
+import { readAllFriends } from 'actions/friendActions';
 import { auth, database } from 'fire';
 
 export function dbSignUpUser(userToSignUp) {
@@ -64,7 +66,9 @@ export function dbLogInUser(userToLogIn) {
 
 export function dbLogOutUser() {
     return dispatch => {
-        dispatch(logout())
+        dispatch(logout());
+        dispatch(readAllFriends([]));
+        dispatch(readAllPosts([]));
     }
 }
 
