@@ -2,7 +2,7 @@ import ActionTypes from 'constants/actionTypes';
 import { updateUser } from 'actions/userActions';
 import { readAllPosts } from 'actions/postActions';
 import { readAllFriends } from 'actions/friendActions';
-import { auth, database } from 'fire';
+import { auth, database } from 'fireConfigs/fire';
 
 export function dbSignUpUser(userToSignUp) {
     return dispatch => {
