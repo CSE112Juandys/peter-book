@@ -110,9 +110,9 @@ class App extends React.Component {
                     component   : WallView
                 };
             });
-            
-            friendRoutes.push({ redirect: true, 
-                                path: "/", 
+
+            friendRoutes.push({ redirect: true,
+                                path: "/",
                                 to: "/profile",
                                 navbarName: "Redirect" });
 
@@ -120,16 +120,16 @@ class App extends React.Component {
                 <Switch>
                     {userRoutes.concat(friendRoutes).map((prop, key) => {
                         if (prop.redirect) {
-                            return <Redirect from={prop.path} 
-                                            to={prop.to} 
+                            return <Redirect from={prop.path}
+                                            to={prop.to}
                                             key={key} />;
                         }
                         else if (prop.util) {
                             return <Route path={prop.path}
-                                        render={() => <WallView posts={posts} 
-                                                                owner={user} 
-                                                                user={user} 
-                                                                addFriend={this.props.onAddFriend} 
+                                        render={() => <WallView posts={posts}
+                                                                owner={user}
+                                                                user={user}
+                                                                addFriend={this.props.onAddFriend}
                                                                 removeFriend={this.props.onRemoveFriend}
                                                                 addPost={this.props.onAddPost}
                                                                 removePost={this.props.onRemovePost}
@@ -138,16 +138,16 @@ class App extends React.Component {
                                         key={key}/>
                         }
                         const friendPosts = posts.filter((post) => {
-                            return ((prop.owner.firstName === post.author.firstName && 
+                            return ((prop.owner.firstName === post.author.firstName &&
                                     prop.owner.lastName === post.author.lastName) ||
                                     (prop.owner.firstName === post.recipient.firstName &&
                                     prop.owner.lastName === post.recipient.lastName));
                         });
                         return <Route path={prop.path}
-                                    render={() => <WallView posts={friendPosts} 
-                                                            owner={prop.owner} 
-                                                            user={user} 
-                                                            addFriend={this.props.onAddFriend} 
+                                    render={() => <WallView posts={friendPosts}
+                                                            owner={prop.owner}
+                                                            user={user}
+                                                            addFriend={this.props.onAddFriend}
                                                             removeFriend={this.props.onRemoveFriend}
                                                             addPost={this.props.onAddPost}
                                                             removePost={this.props.onRemovePost}
@@ -155,7 +155,7 @@ class App extends React.Component {
                                                             updateUser={this.props.onUpdateUser}/>}
                                     key={key}/>
                     })}
-                </Switch>    
+                </Switch>
             )
 
             const { classes, ...rest } = this.props;
@@ -179,9 +179,9 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <FriendDialogue open={this.state.openFriendModal} 
+                    <FriendDialogue open={this.state.openFriendModal}
                                     handleClose={this.handleFriendModalClose}
-                                    user={user} 
+                                    user={user}
                                     addFriend={this.props.onAddFriend}/>
                 </div>
             );
@@ -228,4 +228,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(appStyle)(App));
-

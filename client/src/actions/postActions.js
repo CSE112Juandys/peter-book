@@ -109,6 +109,7 @@ export function dbAddPost(post) {
                 console.log('RECIPIENT POST ADD FAIL');
                 console.log(error);
             })
+            sessionStorage.removeItem('plain');
         }).catch((error) => {
             console.log(error);
         });
@@ -146,63 +147,57 @@ export function dbDeletePost(post) {
 }
 
 export function dbUpdatePost(post) {
-    return dispatch => {
-        const { dbAuthor, dbRecipient, author, recipient, comments } = post
-        post.author.friends = null;
-        post.author.posts = null;
+  return dispatch => {
+    const { dbAuthor, dbRecipient, author, recipient, comments } = post
+    post.author.friends = null;
+    post.author.posts = null;
+    post.recipient.friends = null;
+    post.recipient.posts = null;
+    var postCopy = post;
 
-        post.recipient.friends = null;
-        post.recipient.posts = null;
+    const authorRef    = database.ref('users/' + author.id + '/posts/' + dbAuthor);
+    const recipientRef = database.ref('users/' + recipient.id + '/posts/' + dbRecipient);
+    const keyRef = database.ref('users/' + author.id + '/datakeys/' + recipient.id);
+    keyRef.once('value').then((snapshot) => {
+        var cipher = snapshot.val();
+        kmsDecrypt(sessionStorage.getItem('atok'), cipher);
 
-        console.log(comments);
+        const realKey = sessionStorage.getItem('plain');
 
-        const authorRef    = database.ref('users/' + author.id + '/posts/' + dbAuthor);
-        const recipientRef = database.ref('users/' + recipient.id + '/posts/' + dbRecipient);
-        const keyRef = database.ref('users/' + author.id + '/datakeys/' + recipient.id);
+        for (var k = 0; k < comments.length; k++) {
+          if (comments.hasOwnProperty(k)) {
+              postCopy.comments = comments;
+              postCopy.comments[k].content = encrypt(comments[k].content, realKey);
+          }
+        }
 
-        authorRef.once('value').then((snapshot) => {
-          var changed = snapshot.val();
-          keyRef.once('value').then((snapshot) => {
-              var cipher = snapshot.val();
-              kmsDecrypt(sessionStorage.getItem('atok'), cipher);
+        authorRef.set(postCopy)
+        .then(() => {
+            console.log('AUTHOR POST UPDATE SUCCESS');
+        })
+        .catch((error) => {
+            console.log('AUTHOR POST UPDATE FAIL');
+            console.log(error);
+        })
 
-              const realKey = sessionStorage.getItem('plain');
-
-              for (var k in comments) {
-                if (comments.hasOwnProperty(k)) {
-                  if (!changed.hasOwnProperty('comments')) {
-                    changed.comments = comments;
-                    changed.comments[k].content = encrypt(comments[k].content, realKey);
-                  }
-                  else if (!changed.comments.hasOwnProperty(k)) {
-                    changed.comments[k] = comments[k];
-                    changed.comments[k].content = encrypt(comments[k].content, realKey);
-                  }
-                }
+        recipientRef.set(postCopy)
+        .then(() => {
+            console.log('RECIPIENT POST UPDATE SUCCESS');
+            /*for (var k = 0; k < comments.length; k++) {
+              if (comments.hasOwnProperty(k)) {
+                postCopy.comments[k].content = decrypt(post.comments[k].content, realKey);
               }
-
-              authorRef.set(changed)
-              .then(() => {
-                  console.log('AUTHOR POST UPDATE SUCCESS');
-              })
-              .catch((error) => {
-                  console.log('AUTHOR POST UPDATE FAIL');
-                  console.log(error);
-              })
-
-              recipientRef.set(changed)
-              .then(() => {
-                  console.log('RECIPIENT POST UPDATE SUCCESS');
-                  dispatch(updatePost(post))
-              })
-              .catch((error) => {
-                  console.log('RECIPIENT POST UPDATE FAIL');
-                  console.log(error);
-              })
-
-          })
-      })
-    }
+            }*/
+            console.log(postCopy);
+            dispatch(updatePost(postCopy));
+        })
+        .catch((error) => {
+            console.log('RECIPIENT POST UPDATE FAIL');
+            console.log(error);
+        })
+        sessionStorage.removeItem('plain');
+    })
+  }
 }
 
 export function dbReadAllPosts(forUser) {
@@ -245,7 +240,6 @@ export function dbReadAllPosts(forUser) {
                 });
                 return post;
             })
-            //dispatch(readAllPosts(postsDecrypt.reverse()));
         })
         .catch((error) => {
 
