@@ -23,6 +23,8 @@ import PostList from 'components/List/PostList'
 import EditPostDialogue from 'components/Dialogue/EditPostDialogue';
 
 import PostCardStyle from 'assets/jss/cl-components/postCardStyle';
+import { database } from 'fireConfigs/fire';
+import { decrypt, kmsDecrypt } from 'api/crypto';
 
 class PostCard extends React.Component {
     constructor(props) {
@@ -59,6 +61,7 @@ class PostCard extends React.Component {
 
         newComment.content = content;
         newPost.comments = this.state.post.comments.concat(newComment);
+        
         this.props.updatePost(newPost);
         //this.setState({ post : newPost });
     }

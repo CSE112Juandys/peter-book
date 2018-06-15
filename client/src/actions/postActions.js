@@ -171,6 +171,10 @@ export function dbUpdatePost(post) {
           }
         }
 
+        postCopy.content = encrypt(postCopy.content, realKey);
+        console.log(postCopy);
+        dispatch(updatePost(post));
+
         authorRef.set(postCopy)
         .then(() => {
             console.log('AUTHOR POST UPDATE SUCCESS');
@@ -183,13 +187,6 @@ export function dbUpdatePost(post) {
         recipientRef.set(postCopy)
         .then(() => {
             console.log('RECIPIENT POST UPDATE SUCCESS');
-            /*for (var k = 0; k < comments.length; k++) {
-              if (comments.hasOwnProperty(k)) {
-                postCopy.comments[k].content = decrypt(post.comments[k].content, realKey);
-              }
-            }*/
-            console.log(postCopy);
-            dispatch(updatePost(postCopy));
         })
         .catch((error) => {
             console.log('RECIPIENT POST UPDATE FAIL');
@@ -214,17 +211,17 @@ export function dbReadAllPosts(forUser) {
                     post.comments = [];
                 }
 
-                keyRef.once('value')
-                .then((snapshot) => {
+                keyRef.once('value').then((snapshot) => {
                     var cipher = snapshot.val();
                     kmsDecrypt(sessionStorage.getItem('atok'), cipher);
 
                     const realKey = sessionStorage.getItem('plain');
+
                     if (post.content) {
                         post.content = decrypt(post.content, realKey);
                     }
                     if (post.comments) {
-                    for (var k in post.comments) {
+                    for (var k = 0; k < post.comments.length; k++) {
                         if (post.comments.hasOwnProperty(k)) {
                           post.comments[k].content = decrypt(post.comments[k].content, realKey);
                         }
@@ -232,9 +229,9 @@ export function dbReadAllPosts(forUser) {
                     }
                     if (post.media) {
                       post.media = decrypt(post.media, realKey);
-                      console.log(post.media);
                     }
                     dispatch(readPost(post));
+                    
                 }).catch((error) => {
                     console.log(error);
                 });

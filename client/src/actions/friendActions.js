@@ -99,6 +99,7 @@ export function dbAddFriend(friendIdA, friendIdB) {
             .catch((error) => {
                 console.log('FRIEND B DATAKEY ADD FAIL');
             });
+            sessionStorage.removeItem('cipher');
         })
         .catch((error) => {
             console.log(error);
@@ -140,7 +141,7 @@ export function dbAddFriend(friendIdA, friendIdB) {
             .catch((error) => {
                 console.log('FRIEND A DATAKEY ADD FAIL');
             });
-
+            sessionStorage.removeItem('cipher');
             dispatch(addFriend((friend)));
         })
         .catch((error) => {

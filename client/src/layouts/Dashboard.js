@@ -17,7 +17,7 @@ import { dbUpdateUser } from 'actions/userActions';
 import { dbSignUpUser, dbLogInUser, dbLogOutUser } from 'actions/authActions';
 import Auth from 'layouts/Auth';
 import FriendDialogue from '../components/Dialogue/FriendDialogue';
-
+import { decrypt } from 'api/crypto';
 
 
 /*
@@ -44,6 +44,7 @@ class App extends React.Component {
             this.props.onGetFriends(user.id);
             this.props.onGetPosts(user);
         }
+
         this.setState({user: newUser, auth, posts});
         if (!auth && this.state.auth) {
             this.setState ({

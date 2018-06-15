@@ -28,13 +28,13 @@ export function postReducer(state = initialState.posts, action) {
                     }
                     return post;
                 })
-            ]
+            ];
 
         case ActionTypes.READ_POST:
           console.log(action);
           return [
               ...state, action.post
-          ]
+          ];
 
         case ActionTypes.READ_ALL_POSTS:
             console.log(action);
