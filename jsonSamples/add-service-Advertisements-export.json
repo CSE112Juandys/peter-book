@@ -1,0 +1,22 @@
+{
+  "Ad1" : {
+    "Company" : "Generic Company 1",
+    "ImageURL" : "genericAd1.jpg",
+    "Text" : "Generic Information 1"
+  },
+  "Ad2" : {
+    "Company" : "Generic Company 2",
+    "ImageURL" : "genericAd2.jpg",
+    "Text" : "Generic Information 2"
+  },
+  "Ad3" : {
+    "Company" : "Generic Company 3",
+    "ImageURL" : "genericAd3.jpg",
+    "Text" : "Generic Information 3"
+  },
+  "Ad4" : {
+    "Company" : "Generic Company 4",
+    "ImageURL" : "genericAd4.jpg",
+    "Text" : "Generic Information 4"
+  }
+}
