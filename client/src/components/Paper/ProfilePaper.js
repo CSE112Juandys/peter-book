@@ -47,8 +47,7 @@ class ProfilePaper extends React.Component {
                       open={Boolean(anchorEl)}
                       onClose={this.handleMenuClose}
                     >
-                      <MenuItem onClick={this.handleMenuClose}>Log Out</MenuItem>
-                      <MenuItem onClick={this.handleMenuClose}>Account Settings</MenuItem>
+                      <MenuItem onClick={this.props.handleLogOut}>Log Out</MenuItem>
                     </Menu>
                   </div>
 

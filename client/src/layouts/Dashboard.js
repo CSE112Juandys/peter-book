@@ -14,6 +14,8 @@ import { updateFirebaseStore } from 'actions/updateFirebaseStoreActions';
 import { dbDeleteFriend, dbAddFriend, dbReadAllFriends} from 'actions/friendActions';
 import { dbAddPost, dbDeletePost, dbUpdatePost, dbReadAllPosts } from 'actions/postActions';
 import { dbUpdateUser } from 'actions/userActions';
+import { dbSignUpUser, dbLogInUser, dbLogOutUser } from 'actions/authActions';
+import Auth from 'layouts/Auth';
 import FriendDialogue from '../components/Dialogue/FriendDialogue';
 
 
@@ -27,16 +29,31 @@ class App extends React.Component {
 
         this.state = {  open            : true,
                         openFriendModal : false,
-                        user            : this.props.user,
-                        friends         : this.props.friends,
-                        posts           : this.props.posts};
+                        user            : null,
+                        friends         : [],
+                        posts           : [],
+                        auth            : false };
     }
 
     componentWillReceiveProps(newProps) {
-        const { friends, posts, user } = newProps;
+        console.log("NEW PROPS RECEIVED")
+        const { friends, posts, user, auth } = newProps;
         const newUser = user;
         newUser.friends = friends;
-        this.setState({ friends, posts, user : newUser });
+        if (auth && !this.state.auth) {
+            this.props.onGetFriends(user.id);
+            this.props.onGetPosts(user);
+        }
+        this.setState({user: newUser, auth, posts});
+        if (!auth && this.state.auth) {
+            this.setState ({
+                  open            : true,
+                    openFriendModal : false,
+                    user            : null,
+                    friends         : [],
+                    posts           : [],
+                    auth            : false });
+            }
     }
 
     handleFriendModalOpen = () => {
@@ -62,110 +79,116 @@ class App extends React.Component {
             const ps = new PerfectScrollbar(this.refs.mainPanel);
         }
 
-        this.props.onGetFriends(this.state.user.id);
-        this.props.onGetPosts(this.state.user);
+        // this.props.onGetFriends(this.state.user.id);
+        // this.props.onGetPosts(this.state.user);
         // push dummy user objects to firebase
         //this.props.onUpdateFirebaseStore(generateUsers());
     }
 
     render() {
         console.log(this.props);
+        console.log(this.state);
         const { user, posts } = this.state;
 
-        const userRoutes = [{   owner       : user,
-                                util        : true,
-                                path        : '/profile',
-                                sidebarName : 'User Profile',
-                                navbarName  : 'User Profile',
-                                icon        : `${user.firstName[0]}${user.lastName[0]}`,
-                                component   : WallView    }];
+        if (this.props.auth) {
+            const userRoutes = [{   owner       : user,
+                                    util        : true,
+                                    path        : '/profile',
+                                    sidebarName : 'User Profile',
+                                    navbarName  : 'User Profile',
+                                    icon        : `${user.firstName[0]}${user.lastName[0]}`,
+                                    component   : WallView    }];
 
-        const friendRoutes = this.props.friends.map((friend, key) => {
-            return {
-                owner       : friend,
-                util        : false,
-                path        : `/${friend.firstName}${friend.lastName}`,
-                sidebarName : `${friend.firstName} ${friend.lastName}`,
-                navbarName  : `${friend.firstName} ${friend.lastName}`,
-                icon        : `${friend.firstName[0]}${friend.lastName[0]}`,
-                component   : WallView
-            };
-        });
-        
-        friendRoutes.push({ redirect: true, 
-                            path: "/", 
-                            to: "/profile",
-                            navbarName: "Redirect" });
+            const friendRoutes = this.props.friends.map((friend, key) => {
+                return {
+                    owner       : friend,
+                    util        : false,
+                    path        : `/${friend.firstName}${friend.lastName}`,
+                    sidebarName : `${friend.firstName} ${friend.lastName}`,
+                    navbarName  : `${friend.firstName} ${friend.lastName}`,
+                    icon        : `${friend.firstName[0]}${friend.lastName[0]}`,
+                    component   : WallView
+                };
+            });
+            
+            friendRoutes.push({ redirect: true, 
+                                path: "/", 
+                                to: "/profile",
+                                navbarName: "Redirect" });
 
-        const switchRoutes = (
-            <Switch>
-                {userRoutes.concat(friendRoutes).map((prop, key) => {
-                    if (prop.redirect) {
-                        return <Redirect from={prop.path} 
-                                         to={prop.to} 
-                                         key={key} />;
-                    }
-                    else if (prop.util) {
+            const switchRoutes = (
+                <Switch>
+                    {userRoutes.concat(friendRoutes).map((prop, key) => {
+                        if (prop.redirect) {
+                            return <Redirect from={prop.path} 
+                                            to={prop.to} 
+                                            key={key} />;
+                        }
+                        else if (prop.util) {
+                            return <Route path={prop.path}
+                                        render={() => <WallView posts={posts} 
+                                                                owner={user} 
+                                                                user={user} 
+                                                                addFriend={this.props.onAddFriend} 
+                                                                removeFriend={this.props.onRemoveFriend}
+                                                                addPost={this.props.onAddPost}
+                                                                removePost={this.props.onRemovePost}
+                                                                updatePost={this.props.onUpdatePost}
+                                                                updateUser={this.props.onUpdateUser}/>}
+                                        key={key}/>
+                        }
+                        const friendPosts = posts.filter((post) => {
+                            return ((prop.owner.firstName === post.author.firstName && 
+                                    prop.owner.lastName === post.author.lastName) ||
+                                    (prop.owner.firstName === post.recipient.firstName &&
+                                    prop.owner.lastName === post.recipient.lastName));
+                        });
                         return <Route path={prop.path}
-                                      render={() => <WallView posts={posts} 
-                                                              owner={user} 
-                                                              user={user} 
-                                                              addFriend={this.props.onAddFriend} 
-                                                              removeFriend={this.props.onRemoveFriend}
-                                                              addPost={this.props.onAddPost}
-                                                              removePost={this.props.onRemovePost}
-                                                              updatePost={this.props.onUpdatePost}/>}
-                                      key={key}/>
-                    }
-                    const friendPosts = posts.filter((post) => {
-                        return ((prop.owner.firstName === post.author.firstName && 
-                                 prop.owner.lastName === post.author.lastName) ||
-                                (prop.owner.firstName === post.recipient.firstName &&
-                                 prop.owner.lastName === post.recipient.lastName));
-                    });
-                    return <Route path={prop.path}
-                                  render={() => <WallView posts={friendPosts} 
-                                                          owner={prop.owner} 
-                                                          user={user} 
-                                                          addFriend={this.props.onAddFriend} 
-                                                          removeFriend={this.props.onRemoveFriend}
-                                                          addPost={this.props.onAddPost}
-                                                          removePost={this.props.onRemovePost}
-                                                          updatePost={this.props.onUpdatePost}/>}
-                                  key={key}/>
-                })}
-            </Switch>    
-        )
+                                    render={() => <WallView posts={friendPosts} 
+                                                            owner={prop.owner} 
+                                                            user={user} 
+                                                            addFriend={this.props.onAddFriend} 
+                                                            removeFriend={this.props.onRemoveFriend}
+                                                            addPost={this.props.onAddPost}
+                                                            removePost={this.props.onRemovePost}
+                                                            updatePost={this.props.onUpdatePost}
+                                                            updateUser={this.props.onUpdateUser}/>}
+                                    key={key}/>
+                    })}
+                </Switch>    
+            )
 
-        console.log(this.props);
-        console.log(this.state);
+            const { classes, ...rest } = this.props;
 
-        const { classes, ...rest } = this.props;
-
-        return (
-            <div className={classes.wrapper}>
-                <Sidebar open={this.state.open}
-                         logo={'cl-components'}
-                         friendRoutes={friendRoutes}
-                         utilRoutes={userRoutes}
-                         user={user}
-                         handleChangeWall={this.handleChangeWall}
-                         handleDrawerToggle={this.handleDrawerToggle}
-                         handleModalOpen={this.handleFriendModalOpen}
-                         {...rest}/>
-                <div className={cx(classes.mainPanel, this.state.open && classes.mainPanelShift)} ref="mainPanel">
-                    <div className={classes.content}>
-                        <div className={classes.container}>
-                            {switchRoutes}
+            return (
+                <div className={classes.wrapper}>
+                    <Sidebar open={this.state.open}
+                            logo={'cl-components'}
+                            friendRoutes={friendRoutes}
+                            utilRoutes={userRoutes}
+                            user={user}
+                            handleChangeWall={this.handleChangeWall}
+                            handleDrawerToggle={this.handleDrawerToggle}
+                            handleModalOpen={this.handleFriendModalOpen}
+                            handleLogOut={this.props.onLogOut}
+                            {...rest}/>
+                    <div className={cx(classes.mainPanel, this.state.open && classes.mainPanelShift)} ref="mainPanel">
+                        <div className={classes.content}>
+                            <div className={classes.container}>
+                                {switchRoutes}
+                            </div>
                         </div>
                     </div>
+                    <FriendDialogue open={this.state.openFriendModal} 
+                                    handleClose={this.handleFriendModalClose}
+                                    user={user} 
+                                    addFriend={this.props.onAddFriend}/>
                 </div>
-                <FriendDialogue open={this.state.openFriendModal} 
-                                handleClose={this.handleFriendModalClose}
-                                user={user} 
-                                addFriend={this.props.onAddFriend}/>
-            </div>
-        );
+            );
+        }
+        return (
+            <Auth signUp={this.props.onSignUp} logIn={this.props.onLogIn}/>
+        )
     }
 }
 
@@ -174,11 +197,12 @@ App.propTypes = {
 };
 
 function mapStateToProps(state) {
+    const { user, friends, posts, auth } = state;
     return {
-        user    : state.user,
-        friends : state.friends,
-        posts   : state.posts,
-        //auth    : state.auth
+        user,
+        friends,
+        posts,
+        auth
     };
 }
 
@@ -196,6 +220,10 @@ function mapDispatchToProps(dispatch) {
         onRemovePost  : (post) => dispatch(dbDeletePost(post)),
         onUpdatePost  : (post) => dispatch(dbUpdatePost(post)),
         onGetPosts    : (user) => dispatch(dbReadAllPosts(user)),
+        //AUTH-----------------------------------------------------------------
+        onSignUp    : (userToSignUp) => dispatch(dbSignUpUser(userToSignUp)),
+        onLogIn     : (userToLogIn) => dispatch(dbLogInUser(userToLogIn)),
+        onLogOut    : () => dispatch(dbLogOutUser())
     };
 }
 

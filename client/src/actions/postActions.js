@@ -1,5 +1,5 @@
 import ActionTypes from 'constants/actionTypes';
-import database from 'database';
+import { database } from 'fireConfigs/fire';
 import { encrypt, decrypt, kmsDecrypt } from 'api/crypto';
 
 export function dbAddPost(post) {
@@ -10,14 +10,20 @@ export function dbAddPost(post) {
         const dbAuthor = {  id          : author.id,
                             firstName   : author.firstName,
                             lastName    : author.lastName,
-                            profileImg  : author.profileImg
                          }
+
+        if (author.profileImg) {
+            dbAuthor.profileImg = author.profileImg
+        }
 
         const dbRecipient = {   id          : recipient.id,
                                 firstName   : recipient.firstName,
                                 lastName    : recipient.lastName,
-                                profileImg  : recipient.profileImg
                             }
+
+        if (recipient.profileImg) {
+            dbRecipient.profileImg = recipient.profileImg
+        }
 
         const authorId    = author.id;
         const recipientId = recipient.id;
@@ -179,8 +185,8 @@ export function dbReadAllPosts(forUser) {
                 }
                 return post;
             })
-
-            dispatch(readAllPosts(postsDecrypt));
+            //
+            dispatch(readAllPosts(postsDecrypt.reverse()));
         })
         .catch((error) => {
 
@@ -209,7 +215,7 @@ function updatePost(post) {
     };
 }
 
-function readAllPosts(posts) {
+export function readAllPosts(posts) {
     return {
         type : ActionTypes.READ_ALL_POSTS,
         posts,

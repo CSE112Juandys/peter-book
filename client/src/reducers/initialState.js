@@ -1,8 +1,8 @@
 import { generateUser } from 'api/mockAPI';
 
 export default {
-    user    : generateUser(),
+    user    : null,
     friends : [],
     posts   : [],
-    auth    : true
+    auth    : false
 }

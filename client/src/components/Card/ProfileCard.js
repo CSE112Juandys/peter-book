@@ -2,13 +2,13 @@ import React from 'react';
 import cx from 'classnames';
 import { Public, MoreVert, Edit } from '@material-ui/icons';
 import { withStyles, Card, CardMedia, CardHeader, Avatar, CardContent, Typography, Grid, IconButton , Menu, MenuItem } from '@material-ui/core';
-import { Button } from 'components';
+import ProfileDialogue from 'components/Dialogue/ProfileDialogue';
 
 import profileCardStyle from 'assets/jss/cl-components/profileCardStyle';
 
 class ProfileCard extends React.Component {
 
-    state = { anchorEl : null};
+    state = { anchorEl : null, openDialogue : false,};
 
     handleMenuClick = event => {
         this.setState({
@@ -25,6 +25,14 @@ class ProfileCard extends React.Component {
     handleRemoveFriend = () => {
         this.props.removeFriend(this.props.user, this.props.owner);
         this.handleMenuClose();
+    }
+
+    handleOpenProfileDialogue = () => {
+        this.setState({ openDialogue : true });
+    }
+
+    handleProfileDialogueClose = () => {
+        this.setState({ openDialogue : false });
     }
     
 
@@ -61,9 +69,11 @@ class ProfileCard extends React.Component {
                                 {`${owner.firstName} ${owner.lastName}`}
                             </Typography>
 
-        const cardInfoAction =  <IconButton className={classes.roseIcon}>
+        const cardInfoAction =  (JSON.stringify(user) === JSON.stringify(owner) ?
+                                <IconButton className={classes.roseIcon} onClick={this.handleOpenProfileDialogue}>
                                     <Edit />
-                                </IconButton>
+                                </IconButton> :
+                                <div></div>)
         return (
             <div className={classes.fullWidth}>
                 <Card className={classes.card}>
@@ -75,10 +85,14 @@ class ProfileCard extends React.Component {
                                 action={cardInfoAction} />
                     <CardContent>
                         <Typography component='p'>
-                            {owner.profileInfo}
+                            {JSON.stringify(owner) === JSON.stringify(user) ? owner.profileInfo : owner.profileInfo === 'Update your info!' ? 'No Info' : owner.profileInfo}
                         </Typography>
                     </CardContent>
                 </Card>
+                <ProfileDialogue open={this.state.openDialogue}
+                                 handleClose={this.handleProfileDialogueClose}
+                                 user={user} 
+                                 updateUser={this.props.updateUser}/>
             </div>
         );
     }

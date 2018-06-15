@@ -21,7 +21,7 @@ class PostDialogue extends React.Component {
                         recipSnackbarOpen : false,
                         recipientName  : "hello",
                         recipient      : this.props.owner,
-                        pictures       : [],
+                        picture       : null,
                         textContent    : ""};
     }
 
@@ -43,16 +43,14 @@ class PostDialogue extends React.Component {
 
 
     handleSubmitPost = () => {
-        const { textContent, pictures, recipient } = this.state;
-        console.log(pictures);
-        console.log(textContent);
+        const { textContent, picture, recipient } = this.state;
 
         if (JSON.stringify(recipient) === JSON.stringify(this.props.user)) {
             this.handleRecipSnackbarOpen();
             return
         }
 
-        if (textContent ===  "" && pictures.length === 0) {
+        if (textContent ===  "" && !picture) {
             this.handleSnackbarOpen();
             return
         }
@@ -61,9 +59,8 @@ class PostDialogue extends React.Component {
 
         post.content = "";
 
-        if (pictures.length !== 0) {
-            const postMedia = URL.createObjectURL(pictures[0]);
-            post.media = postMedia;
+        if (picture) {
+            post.media = picture;
         }
 
         if (textContent !== "") {
@@ -73,17 +70,21 @@ class PostDialogue extends React.Component {
         this.setState({ snackbarOpen   : false,
                         recipientName  : "hello",
                         recipient      : this.props.owner,
-                        pictures       : [],
+                        picture        : null,
                         textContent    : ""})
         this.props.handleSubmit(post);
         this.props.handleClose();
     }
 
     onDrop = (pictures) => {
-        this.setState({
-            pictures
-        });
-
+        var reader = new FileReader();
+        reader.readAsDataURL(pictures[0]);
+        reader.onload = () => {
+            this.setState({picture : reader.result})
+        }
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
     }
     
     handleChangeText = (event) => {

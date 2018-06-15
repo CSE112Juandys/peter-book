@@ -7,8 +7,8 @@ export function postReducer(state = initialState.posts, action) {
         case ActionTypes.ADD_POST:
             console.log(action);
             return [
+                Object.assign({}, action.post),
                 ...state,
-                Object.assign({}, action.post)
             ];
 
         case ActionTypes.DELETE_POST:

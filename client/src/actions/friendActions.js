@@ -1,6 +1,6 @@
 import ActionTypes from 'constants/actionTypes';
-import database from 'database';
-import { generate, kmsEncrypt } from 'api/crypto'
+import { database } from 'fireConfigs/fire';
+import { generate, kmsEncrypt } from 'api/crypto';
 
 export function dbDeleteFriend(friendA, friendB) {
     return dispatch => {
@@ -69,7 +69,16 @@ export function dbAddFriend(friendIdA, friendIdB) {
 
             // Update user A's list of friend ids
             const { id, firstName, lastName, profileImg, profileInfo } = snapshot.val();
-            const friend = { id, dbSelfKey : refBFriend.key, dbFriendKey : refAFriend.key, firstName, lastName, profileImg, profileInfo };
+            const friend = {    id,
+                                dbSelfKey : refBFriend.key,
+                                dbFriendKey : refAFriend.key,
+                                firstName,
+                                lastName,
+                                profileInfo };
+
+            if (profileImg) {
+                friend.profileImg = profileImg;
+            }
 
             refBFriend.set(friend)
             .then(() => {
@@ -99,7 +108,18 @@ export function dbAddFriend(friendIdA, friendIdB) {
 
             // Update user A's list of friend ids
             const { id, firstName, lastName, profileImg, profileInfo } = snapshot.val();
-            const friend = { id, dbSelfKey : refAFriend.key, dbFriendKey : refBFriend.key, firstName, lastName, profileImg, profileInfo, dataKey: plainDataKey };
+            const friend = { id,
+                             dbSelfKey : refAFriend.key,
+                            dbFriendKey : refBFriend.key,
+                            firstName,
+                            lastName,
+                            profileImg,
+                            profileInfo,
+                            dataKey: plainDataKey };
+
+            if (profileImg) {
+                friend.profileImg = profileImg;
+            }
 
             refAFriend.set(friend)
             .then(() => {
@@ -155,7 +175,7 @@ function addFriend(friend) {
     };
 }
 
-function readAllFriends(friends) {
+export function readAllFriends(friends) {
     return {
         type : ActionTypes.READ_ALL_FRIENDS,
         friends
