@@ -5,7 +5,7 @@ import { Comment,
 import { withStyles,
          Avatar,
          Button,
-         Card, 
+         Card,
          Snackbar,
          CardHeader,
          CardContent,
@@ -16,7 +16,7 @@ import { withStyles,
          IconButton,
          Menu,
          MenuItem,
-         CardMedia} from '@material-ui/core';
+         CardMedia } from '@material-ui/core';
 import { generatePost } from 'api/mockAPI';
 import cx from 'classnames';
 import PostList from 'components/List/PostList'
@@ -27,7 +27,7 @@ class PostCard extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {  open : false, 
+        this.state = {  open : false,
                         anchorEl : null,
                         post : props.post };
     }
@@ -48,7 +48,7 @@ class PostCard extends React.Component {
         const newPost = this.state.post;
         const recipient = this.authorIsUser() ? this.state.post.recipient : this.state.post.author
         const newComment = generatePost(recipient, this.props.user);
-        
+
         newComment.content = content;
         newPost.comments = this.state.post.comments.concat(newComment);
         this.props.updatePost(newPost);
@@ -62,7 +62,7 @@ class PostCard extends React.Component {
     handleMenuClick = (event) => {
         this.setState({ anchorEl: event.currentTarget });
     };
-    
+
     handleMenuClose = () => {
         this.setState({ anchorEl: null });
     };
@@ -80,7 +80,7 @@ class PostCard extends React.Component {
     render() {
         const { classes, user } = this.props;
         const { open, post, anchorEl } = this.state
-        const { author, recipient, content, media, updated, comments, likes } = post;        
+        const { author, recipient, content, media, updated, comments, likes } = post;
 
         const authorMenuButton =    <div>
                                         <IconButton aria-haspopup="true" onClick={this.handleMenuClick}>
@@ -122,10 +122,10 @@ class PostCard extends React.Component {
                                 <img src={author.profileImg} alt="..." className={cx(classes.linkAvatar, classes.itemIcon)} /> :
                                 <Avatar className={ cx( classes.whiteIcon, classes.itemIcon)}>
                                     <Typography variant="caption" className={classes.whiteFont}>
-                                        {`${author.firstName[0]}${author.lastName[0]}`} 
+                                        {`${author.firstName[0]}${author.lastName[0]}`}
                                     </Typography>
                                 </Avatar>
-        
+
 
 
         return (

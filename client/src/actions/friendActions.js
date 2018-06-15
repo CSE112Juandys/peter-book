@@ -69,12 +69,15 @@ export function dbAddFriend(friendIdA, friendIdB) {
 
             // Update user A's list of friend ids
             const { id, firstName, lastName, profileImg, profileInfo } = snapshot.val();
-            const friend = {    id,
-                                dbSelfKey : refBFriend.key,
-                                dbFriendKey : refAFriend.key,
-                                firstName,
-                                lastName,
-                                profileInfo };
+            const friend = {
+                              id,
+                              dbSelfKey : refBFriend.key,
+                              dbFriendKey : refAFriend.key,
+                              firstName,
+                              lastName,
+                              profileImg : null,
+                              profileInfo
+                           };
 
             if (profileImg) {
                 friend.profileImg = profileImg;
@@ -110,12 +113,12 @@ export function dbAddFriend(friendIdA, friendIdB) {
             const { id, firstName, lastName, profileImg, profileInfo } = snapshot.val();
             const friend = { id,
                              dbSelfKey : refAFriend.key,
-                            dbFriendKey : refBFriend.key,
-                            firstName,
-                            lastName,
-                            profileImg,
-                            profileInfo,
-                            dataKey: plainDataKey };
+                             dbFriendKey : refBFriend.key,
+                             firstName,
+                             lastName,
+                             profileImg : null,
+                             profileInfo
+                           };
 
             if (profileImg) {
                 friend.profileImg = profileImg;

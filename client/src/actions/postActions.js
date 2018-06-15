@@ -46,6 +46,11 @@ export function dbAddPost(post) {
             if (content) {
               protectedContent = encrypt(content, realKey);
             }
+            if (media) {
+              console.log(media);
+              protectedMedia = encrypt(media, realKey);
+              decrypt(protectedMedia, realKey)
+            }
 
             const dbPost = {    id,
                                 dbAuthor : authorRef.key,
@@ -67,7 +72,7 @@ export function dbAddPost(post) {
                                         author : dbAuthor,
                                         recipient : dbRecipient,
                                         content : protectedContent,
-                                        media,
+                                        media : protectedMedia,
                                         edited,
                                         created,
                                         updated,
@@ -131,30 +136,56 @@ export function dbDeletePost(post) {
 
 export function dbUpdatePost(post) {
     return dispatch => {
-        const { dbAuthor, dbRecipient, author, recipient } = post;
-        var changed = post;
+        const { dbAuthor, dbRecipient, author, recipient, comments } = post;
+
+        console.log(comments);
 
         const authorRef    = database.ref('users/' + author.id + '/posts/' + dbAuthor);
         const recipientRef = database.ref('users/' + recipient.id + '/posts/' + dbRecipient);
+        const keyRef = database.ref('users/' + author.id + '/datakeys/' + recipient.id);
 
-          authorRef.set(post)
-          .then(() => {
-              console.log('AUTHOR POST UPDATE SUCCESS');
-          })
-          .catch((error) => {
-              console.log('AUTHOR POST UPDATE FAIL');
-              console.log(error);
-          })
+        authorRef.once('value').then((snapshot) => {
+          var changed = snapshot.val();
+          keyRef.once('value').then((snapshot) => {
+              var cipher = snapshot.val();
+              kmsDecrypt(sessionStorage.getItem('atok'), cipher);
 
-          recipientRef.set(post)
-          .then(() => {
-              console.log('RECIPIENT POST UPDATE SUCCESS');
-              dispatch(updatePost(post))
+              const realKey = sessionStorage.getItem('plain');
+
+              for (var k in comments) {
+                if (comments.hasOwnProperty(k)) {
+                  if (!changed.hasOwnProperty('comments')) {
+                    changed.comments = comments;
+                    changed.comments[k].content = encrypt(comments[k].content, realKey);
+                  }
+                  else if (!changed.comments.hasOwnProperty(k)) {
+                    changed.comments[k] = comments[k];
+                    changed.comments[k].content = encrypt(comments[k].content, realKey);
+                  }
+                }
+              }
+
+              authorRef.set(changed)
+              .then(() => {
+                  console.log('AUTHOR POST UPDATE SUCCESS');
+              })
+              .catch((error) => {
+                  console.log('AUTHOR POST UPDATE FAIL');
+                  console.log(error);
+              })
+
+              recipientRef.set(changed)
+              .then(() => {
+                  console.log('RECIPIENT POST UPDATE SUCCESS');
+                  dispatch(updatePost(post))
+              })
+              .catch((error) => {
+                  console.log('RECIPIENT POST UPDATE FAIL');
+                  console.log(error);
+              })
+
           })
-          .catch((error) => {
-              console.log('RECIPIENT POST UPDATE FAIL');
-              console.log(error);
-          })
+      })
     }
 }
 
@@ -167,25 +198,35 @@ export function dbReadAllPosts(forUser) {
             const postsDecrypt = Object.values(snapshot.val());
             console.log(postsDecrypt);
             postsDecrypt.map((post) => {
+                const keyRef = database.ref('users/' + post.author.id + '/datakeys/' + post.recipient.id);
                 if (!post.comments) {
                     post.comments = [];
                 }
-                if (post.content) {
-                  const keyRef = database.ref('users/' + post.author.id + '/datakeys/' + post.recipient.id);
 
-                  keyRef.once('value').then((snapshot) => {
-                      var cipher = snapshot.val();
-                      kmsDecrypt(sessionStorage.getItem('atok'), cipher);
+                keyRef.once('value').then((snapshot) => {
+                    var cipher = snapshot.val();
+                    kmsDecrypt(sessionStorage.getItem('atok'), cipher);
 
-                      const realKey = sessionStorage.getItem('plain');
-                      post.content = decrypt(post.content, realKey);
-                  }).catch((error) => {
-                      console.log(error);
-                  });
-                }
+                    const realKey = sessionStorage.getItem('plain');
+                    if (post.content) {
+                        post.content = decrypt(post.content, realKey);
+                    }
+                    if (post.comments) {
+                    for (var k in post.comments) {
+                        if (post.comments.hasOwnProperty(k)) {
+                          post.comments[k].content = decrypt(post.comments[k].content, realKey);
+                        }
+                      }
+                    }
+                    if (post.media) {
+                      post.media = decrypt(post.media, realKey);
+                      console.log(post.media);
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
                 return post;
             })
-            //
             dispatch(readAllPosts(postsDecrypt.reverse()));
         })
         .catch((error) => {
