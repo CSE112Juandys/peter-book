@@ -2,7 +2,7 @@ import ActionTypes from 'constants/actionTypes';
 import initialState from 'reducers/initialState';
 
 export function postReducer(state = initialState.posts, action) {
-    
+
     switch(action.type) {
         case ActionTypes.ADD_POST:
             console.log(action);
@@ -30,12 +30,18 @@ export function postReducer(state = initialState.posts, action) {
                 })
             ]
 
+        case ActionTypes.READ_POST:
+          console.log(action);
+          return [
+              ...state, action.post
+          ]
+
         case ActionTypes.READ_ALL_POSTS:
             console.log(action);
             return [
                 ...action.posts
             ];
-            
+
         default:
             console.log("default");
             return state;

@@ -4,8 +4,7 @@ const actionTypes = {
     DELETE_POST : 'DELETE_POST',
     UPDATE_POST : 'UPDATE_POST',
     READ_ALL_POSTS : 'READ_ALL_POSTS',
-
-    /* users action */
+    READ_POST : 'READ_POST',
     UPDATE_USER : 'UPDATE_USER',
 
     /* friend actions */

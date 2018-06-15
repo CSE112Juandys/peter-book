@@ -144,7 +144,7 @@ export function dbUpdatePost(post) {
         post.recipient.posts = null;
 
         console.log(comments);
-        
+
         const authorRef    = database.ref('users/' + author.id + '/posts/' + dbAuthor);
         const recipientRef = database.ref('users/' + recipient.id + '/posts/' + dbRecipient);
         const keyRef = database.ref('users/' + author.id + '/datakeys/' + recipient.id);
@@ -208,7 +208,8 @@ export function dbReadAllPosts(forUser) {
                     post.comments = [];
                 }
 
-                keyRef.once('value').then((snapshot) => {
+                keyRef.once('value')
+                .then((snapshot) => {
                     var cipher = snapshot.val();
                     kmsDecrypt(sessionStorage.getItem('atok'), cipher);
 
@@ -227,12 +228,13 @@ export function dbReadAllPosts(forUser) {
                       post.media = decrypt(post.media, realKey);
                       console.log(post.media);
                     }
+                    dispatch(readPost(post));
                 }).catch((error) => {
                     console.log(error);
                 });
                 return post;
             })
-            dispatch(readAllPosts(postsDecrypt.reverse()));
+            //dispatch(readAllPosts(postsDecrypt.reverse()));
         })
         .catch((error) => {
 
@@ -259,6 +261,13 @@ function updatePost(post) {
         type : ActionTypes.UPDATE_POST,
         post
     };
+}
+
+function readPost(post) {
+  return {
+    type : ActionTypes.READ_POST,
+    post
+  }
 }
 
 export function readAllPosts(posts) {
