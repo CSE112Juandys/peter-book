@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
+// import PerfectScrollbar from "perfect-scrollbar";
+// import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { withStyles } from '@material-ui/core';
 import cx from 'classnames';
 import WallView from 'views/WallView';
@@ -74,10 +74,10 @@ class App extends React.Component {
 
     componentDidMount() {
         // scrollbar
-        if(navigator.platform.indexOf('Win') > -1){
-            // eslint-disable-next-line
-            const ps = new PerfectScrollbar(this.refs.mainPanel);
-        }
+        // if(navigator.platform.indexOf('Win') > -1){
+        //     // eslint-disable-next-line
+        //     const ps = new PerfectScrollbar(this.refs.mainPanel);
+        // }
 
         // this.props.onGetFriends(this.state.user.id);
         // this.props.onGetPosts(this.state.user);

@@ -60,7 +60,8 @@ class FriendDialogue extends React.Component {
         const friendList = this.props.user.friends.map((friend) => {
             return friend.id;
         })
-        if (friendList.includes(Number(this.state.friendId))) {
+        console.log(friendList);
+        if (friendList.includes(this.state.friendId)) {
             this.setState({ dupeSnackbarOpen : true });
             return
         }
